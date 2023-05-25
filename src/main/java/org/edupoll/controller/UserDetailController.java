@@ -49,8 +49,10 @@ public class UserDetailController {
 		model.addAttribute("avatars", avatars);
 		
 		if(detail != null) {
-			model.addAttribute("url", avatar.getUrl());
 			model.addAttribute("detail", detail);
+			if(avatar != null) {
+				model.addAttribute("url", avatar.getUrl());
+			}
 		}
 		
 		return "user/detail";

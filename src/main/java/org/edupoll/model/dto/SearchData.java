@@ -6,7 +6,7 @@ public class SearchData {
 	String id;
 	String nick;
 	String address;
-	String avatarId;
+	String avatarURL;
 	String description;
 	
 	Integer userDetailId;
@@ -14,21 +14,11 @@ public class SearchData {
 	Date joinDate;
 	Date birthday;
 	
+	
 	public SearchData() {
 		super();
 	}
-	public SearchData(String id, String nick, String address, String avatarId, String description, Integer userDetailId,
-			Date joinDate, Date birthday) {
-		super();
-		this.id = id;
-		this.nick = nick;
-		this.address = address;
-		this.avatarId = avatarId;
-		this.description = description;
-		this.userDetailId = userDetailId;
-		this.joinDate = joinDate;
-		this.birthday = birthday;
-	}
+	
 	public String getId() {
 		return id;
 	}
@@ -47,11 +37,11 @@ public class SearchData {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getAvatarId() {
-		return avatarId;
+	public String getAvatarURL() {
+		return avatarURL;
 	}
-	public void setAvatarId(String avatarId) {
-		this.avatarId = avatarId;
+	public void setAvatarURL(String avatarURL) {
+		this.avatarURL = avatarURL;
 	}
 	public String getDescription() {
 		return description;

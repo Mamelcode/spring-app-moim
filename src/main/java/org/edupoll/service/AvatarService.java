@@ -23,10 +23,12 @@ public class AvatarService {
 	@Autowired
 	UserDetailRepository userDetailRepository;
 	
+	// 아바타 전체 가져오기
 	public List<Avatar> getAvatars() {
 		return avatarRepository.findAll();
 	}
 	
+	// 특정 아바타 주소 가져오기
 	public Avatar getAvatar(String logonId) {
 		User user = userRepository.findById(logonId).get();
 		
@@ -34,6 +36,11 @@ public class AvatarService {
 			return null;
 		}
 		UserDetail userDetail = userDetailRepository.findById(user.getUserDetailId()).get();
+		
+		if(userDetail.getAvatarId() == null) {
+			return null;
+		}
+		
 		return avatarRepository.findById(userDetail.getAvatarId()).get();
 	}
 	

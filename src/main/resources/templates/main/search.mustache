@@ -132,22 +132,22 @@ body {
 		</form>
 	</div>
 	<ul id="people">
+	{{#searchDatas}}
 	  <li>
-	    <a href="https://lukepeters.me">
-	    	<img src="/image/avatar/man1.png" />
-	    </a>
-	    <h2>잭스패로우<small>(@anwnlro)</small></h2>
+	  	{{#avatarURL}}
+	    <a href=""><img src="{{avatarURL}}" /> </a>
+	    {{/avatarURL}}
+	    {{^avatarURL}}
+	    <a href=""><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" /> </a>
+	    {{/avatarURL}}
+	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}})</small></h2>
 	    <span class="info">
-	    {{#msg}}
-	    	<em>{{msg}}</em>
-	    {{/msg}}
-	    {{^msg}}
-	    	<em>자기소개</em>
-	    {{/msg}}
-			<em>주소</em>
-			<em>생일</em>
+	   		 <em>{{#description}}{{description}}{{/description}}</em>
+			<em>{{#address}}{{address}}{{/address}}</em>
+			<em>{{#joinDate}}{{joinDate}}{{/joinDate}}</em>
 	    </span>
 	  </li>
+	  {{/searchDatas}}
 	</ul>
 </body>
 </html>
