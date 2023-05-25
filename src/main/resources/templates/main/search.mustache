@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>우리들의 모임</title>
+<style type="text/css">
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2RkZGRkZCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2NjY2NjYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dddddd), color-stop(100%, #cccccc));
+  background-image: -moz-linear-gradient(#dddddd, #cccccc);
+  background-image: -webkit-linear-gradient(#dddddd, #cccccc);
+  background-image: linear-gradient(#dddddd, #cccccc);
+}
+
+#people {
+  position: relative;
+  margin: 80px auto;
+  padding: 0;
+  width: 480px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: #3b3b3b;
+  -webkit-font-smoothing: antialiased;
+  list-style-type: none;
+}
+#people li {
+  position: relative;
+  margin: 0 0 40px 0;
+  padding: 10px 8px 8px 54px;
+  height: 42px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 1px 0 #ffffff;
+  background: #f6f6f6;
+}
+#people li img {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  z-index: 10;
+  margin: 0;
+  padding: 4px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #bbbbbb;
+  box-shadow: 0 1px 0 #ffffff;
+  border-radius: 50%;
+  background: #ffffff;
+}
+#people li h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  color: #4b4b4b;
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.7);
+}
+#people li .info {
+  margin: 0;
+  display: block;
+}
+#people li .info em {
+  margin: 0 18px 0 0;
+  font-size: 11px;
+  line-height: 20px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #5b5b5b;
+  float: left;
+ }
+  
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 3px solid #00B4CC;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: #00B4CC;
+}
+
+.searchButton {
+  width: 80px;
+  height: 36px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.wrap{
+  width: 40%;
+  margin: 0 auto;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<form action="/main/search">
+			<div class="search">
+				<input type="text" class="searchTerm"
+					placeholder="Search...." name="q">
+				<button type="submit" class="searchButton">
+					<span style="font-size: 12px;">검색</span>
+				</button>
+			</div>
+		</form>
+	</div>
+	<ul id="people">
+	  <li>
+	    <a href="https://lukepeters.me">
+	    	<img src="/image/avatar/man1.png" />
+	    </a>
+	    <h2>잭스패로우<small>(@anwnlro)</small></h2>
+	    <span class="info">
+	    {{#msg}}
+	    	<em>{{msg}}</em>
+	    {{/msg}}
+	    {{^msg}}
+	    	<em>자기소개</em>
+	    {{/msg}}
+			<em>주소</em>
+			<em>생일</em>
+	    </span>
+	  </li>
+	</ul>
+</body>
+</html>
