@@ -88,7 +88,7 @@ body {
 
 .searchTerm {
   width: 100%;
-  border: 3px solid #00B4CC;
+  border: 3px solid #000000;
   border-right: none;
   padding: 5px;
   height: 20px;
@@ -98,14 +98,14 @@ body {
 }
 
 .searchTerm:focus{
-  color: #00B4CC;
+  color: #000000;
 }
 
 .searchButton {
   width: 80px;
   height: 36px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
+  border: 1px solid #000000;
+  background: #000000;
   text-align: center;
   color: #fff;
   border-radius: 0 5px 5px 0;
@@ -116,6 +116,39 @@ body {
 .wrap{
   width: 40%;
   margin: 0 auto;
+}
+
+
+
+.mod-pageing ul {
+  font-size: 0;
+  letter-spacing: 0;
+  text-align: center;
+}
+.mod-pageing ul li {
+  display: inline-block;
+  font-size: 1rem;
+  font-size: 14px;
+}
+
+.mod-pageing ul li a {
+  display: block;
+  margin-right: 0.5em;
+  background: #aaa;
+  color: #fff;
+  border: #333;
+  border-radius: 4px;
+  text-decoration: none;
+  padding: 0.6em 0.8em;
+  line-height: 1;
+}
+
+.mod-pageing ul li a:hover {
+  background: #000;
+}
+
+.mod-pageing ul li a.is-active {
+  background: #000;
 }
 </style>
 </head>
@@ -140,14 +173,24 @@ body {
 	    {{^avatarURL}}
 	    <a href=""><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" /> </a>
 	    {{/avatarURL}}
-	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}})</small></h2>
+	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}){{#address}} - {{address}}{{/address}}</small></h2>
 	    <span class="info">
-	   		 <em>{{#description}}{{description}}{{/description}}</em>
-			<em>{{#address}}{{address}}{{/address}}</em>
-			<em>{{#joinDate}}{{joinDate}}{{/joinDate}}</em>
+	   		<em>{{#description}}{{description}}{{/description}}</em>
 	    </span>
 	  </li>
 	  {{/searchDatas}}
+	  {{^searchDatas}}
+	  	<h2 style="color: black; text-align: center;">검색결과가 없습니다</h2>
+	  {{/searchDatas}}
 	</ul>
+
+	<div class="mod-pageing">
+		<ul>
+			{{#pages}}
+			<li><a href="/main/search?q={{q}}&page={{.}}">{{.}}</a></li>
+			{{/pages}}
+		</ul>
+	</div>
+</script>
 </body>
 </html>

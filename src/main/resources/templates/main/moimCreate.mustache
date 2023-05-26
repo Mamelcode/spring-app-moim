@@ -1,0 +1,97 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="profileone.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/css/initial.css"/>
+<link rel="stylesheet" href="/css/style.css?"/>
+<link
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<style type="text/css">
+#profile-image1:hover {
+	cursor: pointer;
+}
+
+.row {
+	margin-top: 30px;
+}
+
+.profile-badge {
+	border: 1px solid #000;
+	border-radius: 5px;
+}
+
+.btn-info {
+	margin-bottom: 10px;
+	background: black;
+	border-color: black;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4 col-sm-6 col-xs-12 profile-badge">
+			<form class="user-detail text-center" method="post" action="/main/moim/create">
+				<input type="hidden" name="currentPerson" value="1">
+				<div class="profile-pic" style="text-align: center; margin-top: 20px;">
+					<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+						id="profile-image1" height="200">
+				</div>
+				<div class="form-group">
+					<label for="Fname">모임제목</label>
+					<input type="text" class="form-control" id="Fname" placeholder="제목"
+						name="title">
+				</div>
+
+				<div class="form-group">
+					<label for="Lname">모임설명</label>
+					<input type="text" class="form-control" id="Lname" placeholder="설명"
+						name="description">
+				</div>
+			
+				<div class="form-group" style="display: flex; flex-direction: column;">
+					<label for="category">카테고리</label>
+					<select id="category" name="cate" 
+					style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; ">
+						{{#cates}}
+							<option value="{{.}}">{{.}}</option>
+						{{/cates}}
+					</select>
+				</div>
+				
+				<div class="form-group" style="display: flex; flex-direction: column;">
+					<label for="person">참가인원</label>
+					<select id="person" name="maxPerson" 
+					style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; ">
+						{{#persons}}
+							<option value="{{.}}">{{.}}명</option>
+						{{/persons}}
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="category">일정</label>
+					<input type="date" class="form-control" id="category" name="targetDate">
+				</div>
+				
+				<div class="form-group" style="display: flex; flex-direction: column;">
+					<label for="person">지속시간(?)</label>
+					<select id="person" name="duration" 
+					style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; ">
+						<option value="2">2시간</option>
+					</select>
+				</div>
+				
+				<div class="btn_box">
+					<button type="submit" class="btn btn-info">개설하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

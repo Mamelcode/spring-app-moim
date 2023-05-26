@@ -9,6 +9,7 @@ import org.edupoll.repository.UserDetailRepository;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -49,6 +50,7 @@ public class UserService {
 	}
 	
 	// 유저 삭제
+	@Transactional
 	public boolean deleteById(String userId) {
 		Optional<User> option = userRepository.findById(userId);
 		if(option.isEmpty()) {

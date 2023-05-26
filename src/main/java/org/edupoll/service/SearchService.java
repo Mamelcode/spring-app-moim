@@ -1,5 +1,6 @@
 package org.edupoll.service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.edupoll.repository.AvatarRepository;
 import org.edupoll.repository.UserDetailRepository;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +28,11 @@ public class SearchService {
 	
 	public List<User> findByQuery(String q) {
 		List<User> list = userRepository.findByIdContainingOrNickContaining(q, q);
+		return list;
+	}
+	
+	public List<User> findByQuery(String q, PageRequest pageRequest) {
+		List<User> list = userRepository.findByIdContainingOrNickContaining(q, q, pageRequest);
 		return list;
 	}
 	
