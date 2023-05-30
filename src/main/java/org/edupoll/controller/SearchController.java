@@ -42,8 +42,8 @@ public class SearchController {
 	
 	@GetMapping("/search")
 	public String SearchViewHandle(@RequestParam(defaultValue = "1")int page, String q, Model model) {	
-		List<User> users = searchService.findByQuery(q, PageRequest.of(page-1, 5));
-
+		
+		// 페이지 계산 구간
 		long cnt = searchService.findByQuery(q).size();
 		System.out.println("cnt => "+ cnt);
 		List<String> pages = new ArrayList<>();
@@ -52,11 +52,10 @@ public class SearchController {
 		}
 		model.addAttribute("pages", pages);	
 		model.addAttribute("q", q);
+			
+		// DB에서 페이징 처리 후 유저정보를 가져옴(user, userdetail, avatars)
+		List<SearchData> searchDatas = searchService.findByQuery2(q, PageRequest.of(page-1, 5));
 		
-		List<UserDetail> userDetails = searchService.UserDetailList(users);
-		
-		List<SearchData> searchDatas = searchService.UserAndDetailList(users, userDetails);
-				
 		model.addAttribute("searchDatas", searchDatas);
 		
 		return "main/search";

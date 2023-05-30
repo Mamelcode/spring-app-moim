@@ -1,6 +1,9 @@
 package org.edupoll.model.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.edupoll.model.entity.User;
 
 public class SearchData {
 	String id;
@@ -11,12 +14,33 @@ public class SearchData {
 	
 	Integer userDetailId;
 	
-	Date joinDate;
-	Date birthday;
+	String joinDate;
+	String birthday;
 	
 	
 	public SearchData() {
 		super();
+	}
+	
+	public SearchData(User user) {
+		this.id = user.getId();
+		this.nick = user.getNick();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(user.getJoinDate() != null)
+			this.joinDate = sdf.format(user.getJoinDate());
+		
+		if(user.getUserDetail() != null) {
+			this.userDetailId = user.getUserDetail().getIdx();
+			this.address = user.getUserDetail().getAddress();
+			this.description = user.getUserDetail().getDescription();
+			
+			if(user.getUserDetail().getBirthday() != null)
+				this.birthday = sdf.format(user.getUserDetail().getBirthday());
+			
+			if(user.getUserDetail().getAvatar() != null)
+				this.avatarURL = user.getUserDetail().getAvatar().getUrl();
+		}
+		
 	}
 	
 	public String getId() {
@@ -55,16 +79,19 @@ public class SearchData {
 	public void setUserDetailId(Integer userDetailId) {
 		this.userDetailId = userDetailId;
 	}
-	public Date getJoinDate() {
+	public String getJoinDate() {
 		return joinDate;
 	}
-	public void setJoinDate(Date joinDate) {
+
+	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
 	}
-	public Date getBirthday() {
+
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 }

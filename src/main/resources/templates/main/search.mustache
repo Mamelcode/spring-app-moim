@@ -77,7 +77,6 @@ body {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #5b5b5b;
-  float: left;
  }
   
 .search {
@@ -173,9 +172,10 @@ body {
 	    {{^avatarURL}}
 	    <a href=""><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" /> </a>
 	    {{/avatarURL}}
-	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}){{#address}} - {{address}}{{/address}}</small></h2>
+	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}) {{#joinDate}} - {{joinDate}}{{/joinDate}}</small></h2>
 	    <span class="info">
 	   		<em>{{#description}}{{description}}{{/description}}</em>
+	   		
 	    </span>
 	  </li>
 	  {{/searchDatas}}

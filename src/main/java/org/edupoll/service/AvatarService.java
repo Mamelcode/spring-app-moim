@@ -32,16 +32,16 @@ public class AvatarService {
 	public Avatar getAvatar(String logonId) {
 		User user = userRepository.findById(logonId).get();
 		
-		if(user.getUserDetailId() == null) {
+		if(user.getUserDetail() == null) {
 			return null;
 		}
-		UserDetail userDetail = userDetailRepository.findById(user.getUserDetailId()).get();
+		UserDetail userDetail = userDetailRepository.findById(user.getUserDetail().getIdx()).get();
 		
-		if(userDetail.getAvatarId() == null) {
+		if(userDetail.getAvatar() == null) {
 			return null;
 		}
 		
-		return avatarRepository.findById(userDetail.getAvatarId()).get();
+		return avatarRepository.findById(userDetail.getAvatar().getId()).get();
 	}
 	
 }

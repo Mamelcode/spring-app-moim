@@ -22,6 +22,11 @@ public class Avatar {
 		this.url = url;
 	}
 	
+	@Override
+	public String toString() {
+		return "Avatar [id=" + id + ", description=" + description + ", url=" + url + "]";
+	}
+
 	public String getId() {
 		return id;
 	}
