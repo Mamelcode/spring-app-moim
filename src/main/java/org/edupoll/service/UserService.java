@@ -60,9 +60,8 @@ public class UserService {
 		User user = option.get();
 		userRepository.delete(user);
 		
-		if(user.getUserDetailId() != null) {
-			UserDetail detail = userDetailRepository.findById(user.getUserDetailId()).get();
-			userDetailRepository.delete(detail);
+		if(user.getUserDetail() != null) {
+			userDetailRepository.delete(user.getUserDetail());
 		}
 		
 		return true;

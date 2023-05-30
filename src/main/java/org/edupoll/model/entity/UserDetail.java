@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,20 +21,29 @@ public class UserDetail {
 	Integer idx;
 	String address;
 	Date birthday;
-	String avatarId;
 	String description;
 	
+	@ManyToOne
+	@JoinColumn(name = "avatarId")
+	Avatar avatar;
+
 	public UserDetail() {
 		super();
 	}
-	
-	public UserDetail(Integer idx, String address, Date birthday, String avatarId, String description) {
+
+	public UserDetail(Integer idx, String address, Date birthday, String description, Avatar avatar) {
 		super();
 		this.idx = idx;
 		this.address = address;
 		this.birthday = birthday;
-		this.avatarId = avatarId;
 		this.description = description;
+		this.avatar = avatar;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDetail [idx=" + idx + ", address=" + address + ", birthday=" + birthday + ", description="
+				+ description + ", avatar=" + avatar.toString() + "]";
 	}
 
 	public Integer getIdx() {
@@ -51,7 +62,6 @@ public class UserDetail {
 		this.address = address;
 	}
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -60,19 +70,19 @@ public class UserDetail {
 		this.birthday = birthday;
 	}
 
-	public String getAvatarId() {
-		return avatarId;
-	}
-
-	public void setAvatarId(String avatarId) {
-		this.avatarId = avatarId;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Avatar avatar) {
+		this.avatar = avatar;
 	}
 }

@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.edupoll.model.entity.Moim;
+import org.edupoll.model.entity.User;
 import org.edupoll.repository.MoimRepository;
+import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,9 +19,13 @@ public class MoimService {
 	@Autowired
 	MoimRepository moimRepository;
 	
+	@Autowired
+	UserRepository userRepository;
+	
 	// 모임 만들기
 	public boolean createMoim(Moim moim, String logonId) {
-		moim.setManagerId(logonId);
+		User user = userRepository.findById(logonId).get();
+		moim.setManager(user);
 		moimRepository.save(moim);
 		return false;
 	}
@@ -28,7 +34,7 @@ public class MoimService {
 	public List<Moim> findByMoimAll(int page) {
 		Sort sort = Sort.by(Direction.ASC, "targetDate");
 		
-		List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 6, sort)).toList();
+		List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 9, sort)).toList();
 		
 		return list;
 	}

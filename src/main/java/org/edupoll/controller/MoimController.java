@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.edupoll.model.dto.MoimListData;
 import org.edupoll.model.entity.Moim;
+import org.edupoll.model.entity.Reply;
 import org.edupoll.service.MoimService;
+import org.edupoll.service.ReplyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class MoimController {
 	@Autowired
 	MoimService moimService;
 	
+	@Autowired
+	ReplyService replyService;
+	
 	@GetMapping("/create")
 	public String moimCreateViewHandle(Model model) {
 		
@@ -47,7 +52,7 @@ public class MoimController {
 		logger.debug("moim crate ==> {} ", moim);
 		boolean result = moimService.createMoim(moim, logonId);
 		
-		return "redirect:/main/moim/list";
+		return "redirect:/moim/list";
 	}
 	
 	@GetMapping("/list")
@@ -76,7 +81,7 @@ public class MoimController {
 		
 		long cnt = moimService.countMoim();
 		List<String> pages = new ArrayList<>();
-		for(int i=1; i<=cnt/6 + (cnt % 6 > 0 ? 1 : 0); i++) {
+		for(int i=1; i<=cnt/9 + (cnt % 9 > 0 ? 1 : 0); i++) {
 			pages.add(String.valueOf(i));
 			if(i == 10) {
 				break;
@@ -90,15 +95,35 @@ public class MoimController {
 	}
 	
 	@GetMapping("/view")
-	public String moimViewHandle(String moimId, Model model) {
-		
+	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId, Model model) {
 		Moim moim = moimService.findByMoim(moimId);
-		
 		logger.debug("View Handle ==> {}", moim);
 		
+		List<Reply> replys = replyService.findByReplys(moimId, page);
+		logger.debug("View Handle ==> {}", replys);
+		
+		long cnt = replyService.findByReplysCount(moimId);
+		List<String> pages = new ArrayList<>();
+		for(int i=1; i<=cnt/10 + (cnt % 10 > 0 ? 1 : 0); i++) {
+			pages.add(String.valueOf(i));
+			if(i == 10) {
+				break;
+			}
+		}
+		model.addAttribute("pages", pages);	
+		
+		model.addAttribute("replys", replys);
 		model.addAttribute("moim", moim);
 		
 		return "main/moimView";
 	}
 	
+	@PostMapping("/reply-create")
+	public String replyCreateHandle(Reply reply) {
+		System.out.println("reply --> "+ reply.toString());
+		
+		replyService.crateReply(reply);
+		
+		return "redirect:/moim/list";
+	}
 }

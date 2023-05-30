@@ -5,6 +5,19 @@
 <title>우리들의 모임</title>
 </head>
 <body>
-
+	{{#moim}}
+	<p>{{title}}</p>
+	<p>{{cate}}</p>
+	<p>{{description}}</p>
+	<p>{{manager.id}}</p>
+	<p>{{#manager.userDetail.avatar.id}}{{.}}{{/manager.userDetail.avatar.id}}</p>
+	{{/moim}}
+	
+	<p>========댓글구간========</p>
+	<ul>
+	{{#replys}}
+		<li>내용 : {{text}}</li>
+	{{/replys}}
+	</ul>
 </body>
 </html>

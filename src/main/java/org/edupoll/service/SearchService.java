@@ -1,6 +1,4 @@
 package org.edupoll.service;
-
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,56 +28,15 @@ public class SearchService {
 		List<User> list = userRepository.findByIdContainingOrNickContaining(q, q);
 		return list;
 	}
-	
-	public List<User> findByQuery(String q, PageRequest pageRequest) {
+			
+	public List<SearchData> findByQuery2(String q, PageRequest pageRequest) {
 		List<User> list = userRepository.findByIdContainingOrNickContaining(q, q, pageRequest);
-		return list;
-	}
-	
-	public List<UserDetail> UserDetailList(List<User> user) {
+		List<SearchData> searchs = new ArrayList<>();
 		
-		List<UserDetail> userDetails = new ArrayList<>();
+		list.forEach(o -> {
+			searchs.add(new SearchData(o));
+		});
 		
-		for(User u : user) {
-			if(u.getUserDetailId() != null) {
-				userDetails.add(userDetailRepository.findById(u.getUserDetailId()).get());
-			}
-		}
-		return userDetails;
-	}
-	
-	public List<SearchData> UserAndDetailList(List<User> users, List<UserDetail> details) {
-		List<SearchData> searchDatas = new ArrayList<>();
-		
-		for(User u : users) {
-			if(u.getUserDetailId() == null) {
-				SearchData sd = new SearchData();
-				sd.setId(u.getId());
-				sd.setNick(u.getNick());
-				sd.setJoinDate(u.getJoinDate());
-				searchDatas.add(sd);
-			}
-			for(UserDetail d : details) {
-				if(u.getUserDetailId() != null) {
-					SearchData sd = new SearchData();
-					if(u.getUserDetailId().equals(d.getIdx())) {
-						if(d.getAvatarId() != null) {
-							sd.setAvatarURL(avatarRepository.findById(d.getAvatarId()).get().getUrl());
-						}
-						sd.setId(u.getId());
-						sd.setNick(u.getNick());
-						sd.setDescription(d.getDescription());
-						sd.setAddress(d.getAddress());
-						sd.setBirthday(d.getBirthday());
-						sd.setJoinDate(u.getJoinDate());
-						
-						searchDatas.add(sd);
-						break;
-					}
-				}
-			}
-		}
-
-		return searchDatas;
+		return searchs;
 	}
 }

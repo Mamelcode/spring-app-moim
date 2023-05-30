@@ -5,9 +5,12 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,8 +18,9 @@ import jakarta.persistence.Table;
 public class Moim {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	String Id;
-	String managerId;
+	String id;
+	
+//	String managerId;
 	
 	String title;
 	String cate;
@@ -28,15 +32,18 @@ public class Moim {
 	
 	Date targetDate;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "managerId")
+	User manager;
+	
 	public Moim() {
 		super();
 	}
 	
-	public Moim(String id, String managerId, String title, String cate, String description, Integer maxPerson,
-			Integer currentPerson, Integer duration, Date targetDate) {
+	public Moim(String id, String title, String cate, String description, Integer maxPerson, Integer currentPerson,
+			Integer duration, Date targetDate, User manager) {
 		super();
-		Id = id;
-		this.managerId = managerId;
+		this.id = id;
 		this.title = title;
 		this.cate = cate;
 		this.description = description;
@@ -44,31 +51,22 @@ public class Moim {
 		this.currentPerson = currentPerson;
 		this.duration = duration;
 		this.targetDate = targetDate;
+		this.manager = manager;
 	}
 	
-	
-
 	@Override
 	public String toString() {
-		return "Moim [Id=" + Id + ", managerId=" + managerId + ", title=" + title + ", cate=" + cate + ", description="
-				+ description + ", maxPerson=" + maxPerson + ", currentPerson=" + currentPerson + ", duration="
-				+ duration + ", targetDate=" + targetDate + "]";
+		return "Moim [id=" + id + ", title=" + title + ", cate=" + cate + ", description=" + description
+				+ ", maxPerson=" + maxPerson + ", currentPerson=" + currentPerson + ", duration=" + duration
+				+ ", targetDate=" + targetDate + ", manager=" + manager + "]";
 	}
 
 	public String getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(String id) {
-		Id = id;
-	}
-
-	public String getManagerId() {
-		return managerId;
-	}
-
-	public void setManagerId(String managerId) {
-		this.managerId = managerId;
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -126,5 +124,12 @@ public class Moim {
 	public void setTargetDate(Date targetDate) {
 		this.targetDate = targetDate;
 	}
-	
+
+	public User getManager() {
+		return manager;
+	}
+
+	public void setManager(User manager) {
+		this.manager = manager;
+	}
 }
