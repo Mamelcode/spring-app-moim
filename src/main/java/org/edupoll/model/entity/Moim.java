@@ -45,6 +45,15 @@ public class Moim {
 		this.duration = duration;
 		this.targetDate = targetDate;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Moim [Id=" + Id + ", managerId=" + managerId + ", title=" + title + ", cate=" + cate + ", description="
+				+ description + ", maxPerson=" + maxPerson + ", currentPerson=" + currentPerson + ", duration="
+				+ duration + ", targetDate=" + targetDate + "]";
+	}
 
 	public String getId() {
 		return Id;

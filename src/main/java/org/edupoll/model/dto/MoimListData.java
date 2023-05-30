@@ -1,6 +1,9 @@
 package org.edupoll.model.dto;
 
 public class MoimListData {
+	String id;
+	String managerId;
+	
 	String title;
 	String cate;
 	String description;
@@ -10,6 +13,22 @@ public class MoimListData {
 	Integer duration;
 	
 	String formatDate;
+	
+	public String getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/moim")
 public class MoimController {
 	
 	Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -28,7 +28,7 @@ public class MoimController {
 	@Autowired
 	MoimService moimService;
 	
-	@GetMapping("/moim/create")
+	@GetMapping("/create")
 	public String moimCreateViewHandle(Model model) {
 		
 		String[] cates = new String[] {"취미","학습","봉사","건강","비지니스","문화","스포츠"};
@@ -41,7 +41,7 @@ public class MoimController {
 		return "main/moimCreate";
 	}
 	
-	@PostMapping("/moim/create")
+	@PostMapping("/create")
 	public String moimCreateHandle(@SessionAttribute String logonId , Moim moim) {
 		
 		logger.debug("moim crate ==> {} ", moim);
@@ -50,7 +50,7 @@ public class MoimController {
 		return "redirect:/main/moim/list";
 	}
 	
-	@GetMapping("/moim/list")
+	@GetMapping("/list")
 	public String moimListHandle(@RequestParam(defaultValue = "1")int page , Model model) {
 		
 		List<Moim> moims = moimService.findByMoimAll(page);
@@ -61,6 +61,7 @@ public class MoimController {
 		
 		for(Moim m : moims) {
 			MoimListData data = new MoimListData();
+			data.setId(m.getId());
 			data.setCate(m.getCate());
 			data.setCurrentPerson(m.getCurrentPerson());
 			data.setDescription(m.getDescription());
@@ -86,6 +87,18 @@ public class MoimController {
 		model.addAttribute("moims", list);
 		
 		return "main/moimList";
+	}
+	
+	@GetMapping("/view")
+	public String moimViewHandle(String moimId, Model model) {
+		
+		Moim moim = moimService.findByMoim(moimId);
+		
+		logger.debug("View Handle ==> {}", moim);
+		
+		model.addAttribute("moim", moim);
+		
+		return "main/moimView";
 	}
 	
 }

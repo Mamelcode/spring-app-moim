@@ -138,7 +138,7 @@ body > * {
 <body>
 	<div class="container">
 		{{#moims}}
-		<div class="col">
+		<div class="col" onclick="location.href='/moim/view?moimId={{id}}'">
 			<div class="card shadow--sm">
 				<div class="card--body">
 					<p class="card--text card--size-state">[{{cate}}]{{title}}</p>
@@ -156,7 +156,7 @@ body > * {
 		<ul>
 			
 			{{#pages}}
-			<li><a href="/main/moim/list?page={{.}}">{{.}}</a></li>
+			<li><a href="/moim/list?page={{.}}">{{.}}</a></li>
 			{{/pages}}
 		</ul>
 	</div>

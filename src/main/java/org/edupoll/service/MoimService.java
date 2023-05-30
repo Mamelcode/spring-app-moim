@@ -1,6 +1,7 @@
 package org.edupoll.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.edupoll.model.entity.Moim;
 import org.edupoll.repository.MoimRepository;
@@ -35,5 +36,15 @@ public class MoimService {
 	// 모임 개수 가져오기
 	public long countMoim() {
 		return moimRepository.count();
+	}
+	
+	// 모임 디테일 가져오기
+	public Moim findByMoim(String moimId) {
+		Optional<Moim> option = moimRepository.findById(moimId);
+		if(option.isEmpty()) {
+			return null;
+		}
+		
+		return option.get();
 	}
 }
