@@ -1,8 +1,8 @@
-package org.edupoll.model.dto;
+package org.edupoll.model.dto.response;
 
 import java.util.Date;
 
-public class UserDetailData {
+public class UserDetailResponseData {
 	
 	Integer idx;
 	

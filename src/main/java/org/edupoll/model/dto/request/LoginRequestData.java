@@ -1,12 +1,12 @@
-package org.edupoll.model.dto;
+package org.edupoll.model.dto.request;
 
-public class LoginData {
+public class LoginRequestData {
 	String loginId;
 	String loginPass;
 	
-	public LoginData() {
+	public LoginRequestData() {
 	}
-	public LoginData(String loginId, String loginPass) {
+	public LoginRequestData(String loginId, String loginPass) {
 		this.loginId = loginId;
 		this.loginPass = loginPass;
 	}

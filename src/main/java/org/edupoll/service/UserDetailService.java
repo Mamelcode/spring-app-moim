@@ -2,7 +2,7 @@ package org.edupoll.service;
 
 import java.util.Optional;
 
-import org.edupoll.model.dto.UserDetailData;
+import org.edupoll.model.dto.response.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
@@ -24,7 +24,7 @@ public class UserDetailService {
 	@Autowired
 	AvatarRepository avatarRepository;
 	
-	public boolean modifyUserDetail(UserDetailData userDetailData, String userId) {
+	public boolean modifyUserDetail(UserDetailResponseData userDetailData, String userId) {
 		
 		Optional<User> option = userRepository.findById(userId);
 		
@@ -50,10 +50,10 @@ public class UserDetailService {
 		return true;
 	}
 	
-	public UserDetailData getUserDetail(String userId) {
+	public UserDetailResponseData getUserDetail(String userId) {
 		UserDetail detail = userRepository.findById(userId).get().getUserDetail();
 		
-		UserDetailData detailData = new UserDetailData();
+		UserDetailResponseData detailData = new UserDetailResponseData();
 		
 		if(detail.getAddress() != null) {
 			detailData.setAddress(detail.getAddress());

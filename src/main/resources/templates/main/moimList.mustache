@@ -145,7 +145,7 @@ body > * {
 					<hr/>
 					<p class="card--text">{{description}}</p>
 					<p class="card--text">{{formatDate}}</p>
-					<p class="card--text">{{currentPerson}}/{{maxPerson}}</p>
+					<p class="card--text">{{currentPerson}}/{{#maxPerson}}{{.}}{{/maxPerson}}</p>
 				</div>
 			</div>
 		</div>
@@ -154,10 +154,19 @@ body > * {
 
 	<div class="mod-pageing">
 		<ul>
-			
+			{{#prev}}
+			<li><a href="/moim/list?page={{#prevPage}}{{.}}{{/prevPage}}">이전</a></li>
+			{{/prev}}
+			{{^prev}}
+			{{/prev}}
 			{{#pages}}
 			<li><a href="/moim/list?page={{.}}">{{.}}</a></li>
 			{{/pages}}
+			{{#next}}
+			<li><a href="/moim/list?page={{#nextPage}}{{.}}{{/nextPage}}">다음</a></li>
+			{{/next}}
+			{{^next}}
+			{{/next}}
 		</ul>
 	</div>
 </body>

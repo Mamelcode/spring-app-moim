@@ -4,9 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.edupoll.model.dto.MoimListData;
+import org.edupoll.model.dto.response.MoimListResponseData;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
+import org.edupoll.service.AttendanceService;
 import org.edupoll.service.MoimService;
 import org.edupoll.service.ReplyService;
 import org.slf4j.Logger;
@@ -33,6 +34,10 @@ public class MoimController {
 	@Autowired
 	ReplyService replyService;
 	
+	@Autowired
+	AttendanceService attendanceService;
+	
+	// 모임 만들기 뷰
 	@GetMapping("/create")
 	public String moimCreateViewHandle(Model model) {
 		
@@ -46,6 +51,7 @@ public class MoimController {
 		return "main/moimCreate";
 	}
 	
+	// 모임 만들기 처리
 	@PostMapping("/create")
 	public String moimCreateHandle(@SessionAttribute String logonId , Moim moim) {
 		
@@ -55,6 +61,7 @@ public class MoimController {
 		return "redirect:/moim/list";
 	}
 	
+	// 모임 리스트
 	@GetMapping("/list")
 	public String moimListHandle(@RequestParam(defaultValue = "1")int page , Model model) {
 		
@@ -62,10 +69,10 @@ public class MoimController {
 		
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 		
-		List<MoimListData> list = new ArrayList<>();
+		List<MoimListResponseData> list = new ArrayList<>();
 		
 		for(Moim m : moims) {
-			MoimListData data = new MoimListData();
+			MoimListResponseData data = new MoimListResponseData();
 			data.setId(m.getId());
 			data.setCate(m.getCate());
 			data.setCurrentPerson(m.getCurrentPerson());
@@ -79,28 +86,53 @@ public class MoimController {
 		}
 		
 		
-		long cnt = moimService.countMoim();
+		// 페이징처리
+		int total = (int)moimService.countMoim();
+		int totalPage = total/9 + (total % 9 > 0 ? 1: 0);
+		int viewPage = 5;
+		int endPage = (((page-1)/viewPage)+1) * viewPage;
+		if(totalPage < endPage) {
+		    endPage = totalPage;
+		}
+		int startPage = ((page-1)/viewPage) * viewPage + 1;
+		
+		int idx = Math.round(startPage / viewPage)+1;
+
 		List<String> pages = new ArrayList<>();
-		for(int i=1; i<=cnt/9 + (cnt % 9 > 0 ? 1 : 0); i++) {
+		for(int i=startPage; i<=5*idx; i++) {
 			pages.add(String.valueOf(i));
-			if(i == 10) {
+			if(i == totalPage) {
+				model.addAttribute("nextPage", i+1);
 				break;
 			}
+			model.addAttribute("nextPage", i+1);
 		}
-		model.addAttribute("pages", pages);	
 		
+		boolean existPrev = page >= 6;
+		boolean existNext = true;
+		if(endPage >= totalPage)
+		{
+			existNext = false;
+		}
+		model.addAttribute("prev", existPrev);
+		model.addAttribute("next", existNext);
+		model.addAttribute("prevPage", startPage-1);		
+		model.addAttribute("pages", pages);	
+		// 페이징처리
+				
 		model.addAttribute("moims", list);
 		
 		return "main/moimList";
 	}
 	
+	// 모임 디테일 뷰
 	@GetMapping("/view")
-	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId, Model model) {
+	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId,@SessionAttribute String logonId, Model model) {
 		Moim moim = moimService.findByMoim(moimId);
-		logger.debug("View Handle ==> {}", moim);
+		logger.debug("View moim Handle ==> {}", moim);
 		
 		List<Reply> replys = replyService.findByReplys(moimId, page);
-		logger.debug("View Handle ==> {}", replys);
+		logger.debug("View replys Handle ==> {}", replys);
 		
 		long cnt = replyService.findByReplysCount(moimId);
 		List<String> pages = new ArrayList<>();
@@ -114,16 +146,18 @@ public class MoimController {
 		
 		model.addAttribute("replys", replys);
 		model.addAttribute("moim", moim);
+		model.addAttribute("isJoined", attendanceService.isJoined(logonId, moimId));
 		
 		return "main/moimView";
 	}
 	
+	// 모임 댓글 처리
 	@PostMapping("/reply-create")
 	public String replyCreateHandle(Reply reply) {
 		System.out.println("reply --> "+ reply.toString());
 		
 		replyService.crateReply(reply);
 		
-		return "redirect:/moim/list";
+		return "redirect:/moim/view?moimId="+reply.getMoim().getId();
 	}
 }

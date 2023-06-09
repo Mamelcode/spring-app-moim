@@ -149,7 +149,21 @@ body {
 .mod-pageing ul li a.is-active {
   background: #000;
 }
+
+.bi-heart-fill {
+	color: red;
+}
+
+.bi-heart-fill:hover {
+	cursor: pointer;
+}
+
+.bi-heart:hover {
+	cursor: pointer;
+}
+
 </style>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 <body>
 	<div class="wrap">
@@ -172,10 +186,28 @@ body {
 	    {{^avatarURL}}
 	    <a href=""><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" /> </a>
 	    {{/avatarURL}}
-	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}) {{#joinDate}} - {{joinDate}}{{/joinDate}}</small></h2>
+	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}) 
+	    {{#joinDate}} - {{joinDate}}{{/joinDate}}</small>
+	    <!--  
+	    {{#followed }}
+	    <a id="target{{id}}" class="follow bi-heart-fill" style="text-decoration: none;"
+	    data-user-id="{{id}}" data-status="follow">♥</a></h2>
+	    {{/followed }}
+	    {{^followed }}
+	    <a id="target{{id}}" class="follow bi-heart" style="text-decoration: none;"
+	    data-user-id="{{id}}" data-status="not-follow">♡</a></h2>
+	    {{/followed }}
+	    -->
+   		{{#followed }}
+		<i class="follow bi bi-heart-fill text-danger" data-user-id="{{id}}"
+			data-status="follow"></i>
+		{{/followed }}
+		{{^followed }}
+		<i class="follow bi bi-heart text-danger" data-user-id="{{id}}"
+			data-status="not-follow"></i>
+		{{/followed }}
 	    <span class="info">
 	   		<em>{{#description}}{{description}}{{/description}}</em>
-	   		
 	    </span>
 	  </li>
 	  {{/searchDatas}}
@@ -191,6 +223,38 @@ body {
 			{{/pages}}
 		</ul>
 	</div>
+<script>
+	document.querySelectorAll(".follow").forEach( elm => {
+		elm.onclick = (evt)=> {
+			// window.alert(evt.target.dataset.userId);
+			if(elm.dataset.status==="not-follow") {
+				const xhr = new XMLHttpRequest();
+				xhr.open("post","/api/follow", false);
+				// post는 body가 있는 요청. body에 담긴 내용의 종류를 설정해야 됨.
+				xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+				xhr.send("target=" +evt.target.dataset.userId );	// post는 send안에 body 설정을 해야 함.
+				const response = JSON.parse(xhr.responseText);
+				if(response.result) {
+					//document.querySelector(".follow").innerHTML = "♥";
+					evt.target.classList.remove("bi-heart");
+					evt.target.classList.add("bi-heart-fill");
+					evt.target.dataset.status="follow";
+				}
+			}else {
+				const xhr = new XMLHttpRequest();
+				xhr.open("delete","/api/follow?target="+evt.target.dataset.userId, false);
+				xhr.send();
+				const response = JSON.parse(xhr.responseText);
+				if(response.result) {
+					//document.querySelector(".follow").innerHTML = "♡";
+					evt.target.classList.remove("bi-heart-fill");
+					evt.target.classList.add("bi-heart");
+					evt.target.dataset.status="not-follow";
+				}
+			}
+		};
+	});
+	
 </script>
 </body>
 </html>

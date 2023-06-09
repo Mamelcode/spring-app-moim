@@ -8,8 +8,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-import org.edupoll.model.dto.UserDetailData;
+import org.edupoll.model.dto.response.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
+import org.edupoll.model.entity.Moim;
+import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
 import org.edupoll.service.AvatarService;
 import org.edupoll.service.UserDetailService;
@@ -47,24 +49,34 @@ public class UserDetailController {
 	public String userDetailViewHandle(@SessionAttribute String logonId
 			, String error , ModelMap model) throws ParseException {
 		
-		UserDetailData detail = userDetailService.getUserDetail(logonId);
+		// 유저 디테일 정보 가져오기
+		UserDetailResponseData detail = userDetailService.getUserDetail(logonId);
+				
+		// 유저의 모임리스트 가져오기 / 셋팅하기
+		User user = userService.findById(logonId);
+		List<Moim> moimList = user.getMoim();
+		model.addAttribute("moimList", moimList);
+		
+		// 아바타 전체 리스트 가져오기 / 셋팅하기
 		List<Avatar> avatars = avatarService.getAvatars();
-		Avatar avatar = avatarService.getAvatar(logonId);
 		model.addAttribute("avatars", avatars);
 		
+		// 로그온 유저의 아바타 정보 가져오기 / 셋팅하기
+		Avatar avatar = avatarService.getAvatar(logonId);
 		if(detail != null) {
 			model.addAttribute("detail", detail);
 			if(avatar != null) {
 				model.addAttribute("url", avatar.getUrl());
 			}
 		}
-			
+		
+		// 디테일 화면으로 넘기기
 		return "user/detail";
 	}
 	
 	@PostMapping("/detail")
 	public String userDetailModifyHandle(@SessionAttribute String logonId,
-			UserDetailData userDetailData, Model model) {
+			UserDetailResponseData userDetailData, Model model) {
 				
 		boolean rst = userDetailService.modifyUserDetail(userDetailData, logonId);
 		logger.debug("UserdetailHandle .. {} ", rst);

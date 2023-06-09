@@ -5,19 +5,111 @@
 <title>우리들의 모임</title>
 </head>
 <body>
-	{{#moim}}
-	<p>{{title}}</p>
-	<p>{{cate}}</p>
-	<p>{{description}}</p>
-	<p>{{manager.id}}</p>
-	<p>{{#manager.userDetail.avatar.id}}{{.}}{{/manager.userDetail.avatar.id}}</p>
-	{{/moim}}
-	
-	<p>========댓글구간========</p>
-	<ul>
-	{{#replys}}
-		<li>내용 : {{text}}</li>
-	{{/replys}}
-	</ul>
+
+	<div style="display: flex; flex-direction: column; align-items: center;
+	width: 960px">
+		<div style="border: 1px solid #ccc; width: 50%;">
+			{{#moim}}
+			<p>{{title}} (<span id="cp">{{currentPerson}}</span>/{{maxPerson}})</p>
+			<p>{{cate}}</p>
+			<p>{{description}}</p>
+			<p>{{manager.id}}</p>
+			<p>{{#manager.userDetail.avatar.id}}{{.}}{{/manager.userDetail.avatar.id}}</p>
+			{{/moim}}
+		</div>
+		<div style="border: 1px solid #ccc; width: 50%; text-align: center;
+		margin: 10px 0px;">
+			<p>참가자 목록</p>
+			<div id="attendance">
+			{{#moim.attendances}}
+				<span>@{{user.id}}</span>
+			{{/moim.attendances}}
+			</div>
+		</div>
+		<div style="border: 1px solid #ccc; width: 50%;">
+			<p>========댓글구간========</p>
+			<ul>
+			{{#replys}}
+				<li>내용 : {{text}}</li>
+			{{/replys}}
+			</ul>
+		</div>
+		
+		<div style="border: 1px solid #ccc; width: 50%; margin: 10px 0px;">
+			<form action="/moim/reply-create" method="post">
+				<div style="display: flex; flex-direction: column;">
+					<input type="hidden" name="moim.id" value="{{moim.id}}">
+					<textarea name="text" placeholder="댓글을 남겨주세요.." style="resize: none;">
+					</textarea>
+					<input type="password" name="password" placeholder="비밀번호..">
+					<button type="submit">등록</button>
+				</div>
+			</form>
+			{{#isJoined}}
+				<button id="join-bt" data-status="joined">참가취소</button>
+			{{/isJoined}}
+			{{^isJoined}}
+				<button id="join-bt" data-status="not-joined">참가신청</button>
+			{{/isJoined}}
+		</div>
+		<a href="/moim/list">목록으로</a>
+	</div>
+<script type="text/javascript">
+	document.querySelector("#join-bt").onclick = (evt) => {
+		const xhr = new XMLHttpRequest();
+		
+		const status = document.querySelector("#join-bt").dataset.status;
+		if(status === "not-joined") {
+			sendAddAttendanceReq();
+		}else if(status === "joined") {
+			sendDeleteAttendanceReq();
+		}
+		
+		function sendAddAttendanceReq() {
+			xhr.open("post", "/api/attendance/join", false);
+			const data = new FormData();
+			data.append("moimId", "{{moim.Id}}");
+			data.append("userId", "{{logonId}}");		
+			xhr.send(data);
+			
+			const txt = xhr.responseText;
+			console.log(txt);
+			const obj = JSON.parse(txt);
+			if(obj.result) {
+				document.querySelector("#cp").innerHTML = obj.currentPerson; // int
+				let ids = "";
+				for(var i of obj.attendUserIds) {
+					ids += "<span>@"+ i +"<span>";
+				}
+				document.querySelector("#attendance").innerHTML = ids;
+				document.querySelector("#join-bt").innerHTML = "참가취소";
+				document.querySelector("#join-bt").dataset.status = "joined";
+			}else {
+				window.alert(obj.errorMessage);
+			}
+		};
+		
+		function sendDeleteAttendanceReq() {
+			xhr.open("get", "/api/attendance/delete?moimId={{moim.Id}}&userId={{logonId}}", false);	
+			xhr.send();
+			
+			const txt = xhr.responseText;
+			console.log(txt);
+			const obj = JSON.parse(txt);
+			if(obj.result) {
+				document.querySelector("#cp").innerHTML = obj.currentPerson;
+				let ids = "";
+				for(var i of obj.attendUserIds) {
+					ids += "<span>@"+ i +"<span>";
+				}
+				document.querySelector("#attendance").innerHTML = ids;
+				document.querySelector("#join-bt").innerHTML = "참가하기";
+				document.querySelector("#join-bt").dataset.status = "not-joined";
+			}else {
+				window.alert(obj.errorMessage);
+			}
+		};
+	};
+</script>
 </body>
 </html>

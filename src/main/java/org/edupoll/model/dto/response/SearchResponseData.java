@@ -1,11 +1,11 @@
-package org.edupoll.model.dto;
+package org.edupoll.model.dto.response;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.edupoll.model.entity.User;
 
-public class SearchData {
+public class SearchResponseData {
 	String id;
 	String nick;
 	String address;
@@ -17,12 +17,14 @@ public class SearchData {
 	String joinDate;
 	String birthday;
 	
+	boolean followed;
 	
-	public SearchData() {
+	
+	public SearchResponseData() {
 		super();
 	}
 	
-	public SearchData(User user) {
+	public SearchResponseData(User user, boolean followed) {
 		this.id = user.getId();
 		this.nick = user.getNick();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,8 +43,18 @@ public class SearchData {
 				this.avatarURL = user.getUserDetail().getAvatar().getUrl();
 		}
 		
+		this.followed = followed;
+		
 	}
 	
+	public boolean isFollowed() {
+		return followed;
+	}
+
+	public void setFollowed(boolean followed) {
+		this.followed = followed;
+	}
+
 	public String getId() {
 		return id;
 	}

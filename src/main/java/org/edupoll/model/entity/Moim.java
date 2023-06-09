@@ -1,6 +1,7 @@
 package org.edupoll.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +38,12 @@ public class Moim {
 	@JoinColumn(name = "managerId")
 	User manager;
 	
+	@OneToMany(mappedBy = "moim", fetch = FetchType.LAZY)
+	List<Reply> replys;
+	
+	@OneToMany(mappedBy = "moim", fetch = FetchType.LAZY)
+	List<Attendance> attendances;
+	
 	public Moim() {
 		super();
 	}
@@ -54,13 +62,6 @@ public class Moim {
 		this.manager = manager;
 	}
 	
-	@Override
-	public String toString() {
-		return "Moim [id=" + id + ", title=" + title + ", cate=" + cate + ", description=" + description
-				+ ", maxPerson=" + maxPerson + ", currentPerson=" + currentPerson + ", duration=" + duration
-				+ ", targetDate=" + targetDate + ", manager=" + manager + "]";
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -131,5 +132,21 @@ public class Moim {
 
 	public void setManager(User manager) {
 		this.manager = manager;
+	}
+
+	public List<Reply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(List<Reply> replys) {
+		this.replys = replys;
+	}
+
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
 	}
 }

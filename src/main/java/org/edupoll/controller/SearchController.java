@@ -3,7 +3,7 @@ package org.edupoll.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.edupoll.model.dto.SearchData;
+import org.edupoll.model.dto.response.SearchResponseData;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
 import org.edupoll.service.AvatarService;
@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequestMapping("/main")
@@ -41,7 +42,8 @@ public class SearchController {
 	}
 	
 	@GetMapping("/search")
-	public String SearchViewHandle(@RequestParam(defaultValue = "1")int page, String q, Model model) {	
+	public String SearchViewHandle(@RequestParam(defaultValue = "1")int page, String q, Model model, 
+			@SessionAttribute String logonId) {	
 		
 		// 페이지 계산 구간
 		long cnt = searchService.findByQuery(q).size();
@@ -54,7 +56,7 @@ public class SearchController {
 		model.addAttribute("q", q);
 			
 		// DB에서 페이징 처리 후 유저정보를 가져옴(user, userdetail, avatars)
-		List<SearchData> searchDatas = searchService.findByQuery2(q, PageRequest.of(page-1, 5));
+		List<SearchResponseData> searchDatas = searchService.findByQuery2(logonId, q, PageRequest.of(page-1, 5));
 		
 		model.addAttribute("searchDatas", searchDatas);
 		

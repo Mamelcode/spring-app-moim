@@ -2,7 +2,7 @@ package org.edupoll.service;
 
 import java.util.Optional;
 
-import org.edupoll.model.dto.LoginData;
+import org.edupoll.model.dto.request.LoginRequestData;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
 import org.edupoll.repository.UserDetailRepository;
@@ -32,7 +32,7 @@ public class UserService {
 	}
 	
 	// 로그인 처리를 하기 위해 사용할 서비스
-	public boolean isValidUser(LoginData user) {
+	public boolean isValidUser(LoginRequestData user) {
 		Optional<User> optional = userRepository.findById(user.getLoginId());
 		if(optional.isPresent()) {
 			String savePass = optional.get().getPass();
@@ -42,11 +42,9 @@ public class UserService {
 		}
 	}
 	
-	// 유저정보 가져오기
+	// 특정 유저정보 가져오기
 	public User findById(String userId) {
-		User user = userRepository.findById(userId).get();
-		
-		return user;
+		return userRepository.findById(userId).orElse(null);
 	}
 	
 	// 유저 삭제

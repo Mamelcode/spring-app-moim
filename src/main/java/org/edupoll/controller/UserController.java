@@ -1,6 +1,6 @@
 package org.edupoll.controller;
 
-import org.edupoll.model.dto.LoginData;
+import org.edupoll.model.dto.request.LoginRequestData;
 import org.edupoll.model.entity.User;
 import org.edupoll.service.UserService;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public String loginTaskHandle(LoginData data, Model model, HttpSession session) {
+	public String loginTaskHandle(LoginRequestData data, Model model, HttpSession session) {
 		boolean result = userService.isValidUser(data);
 		logger.debug("userLoginHandle : {} ", result);
 		if(result) {

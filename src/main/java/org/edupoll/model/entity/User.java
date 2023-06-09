@@ -1,12 +1,15 @@
 package org.edupoll.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -31,7 +34,19 @@ public class User {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_DETAIL_IDX") // User Entity의 필드
 	UserDetail userDetail; // 이 컬럼을 이용해서 찾는 UserDetail(idx기준)
-
+	
+	@OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+	List<Moim> moim;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<Attendance> attendances;
+	
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	List<Follow> followTo;
+	
+	@OneToMany(mappedBy = "target", fetch =  FetchType.LAZY)
+	List<Follow> followFrom;
+	
 	// set / get
 	public String getId() {
 		return id;
@@ -78,6 +93,14 @@ public class User {
 
 	public void setUserDetail(UserDetail userDetail) {
 		this.userDetail = userDetail;
+	}
+	
+	public List<Moim> getMoim() {
+		return moim;
+	}
+
+	public void setMoim(List<Moim> moim) {
+		this.moim = moim;
 	}
 
 	// 객체 insert 전 할 작업

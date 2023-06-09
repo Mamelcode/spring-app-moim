@@ -113,6 +113,12 @@
 			</form>
 		</div>
 	</div>
+	<p>개설한 모임 목록</p>
+	<ul>
+	{{#moimList}}
+		<li><a href="/moim/view?moimId={{id}}">{{title}}</a></li>
+	{{/moimList}}
+	</ul>
 </div>
 <!--  
 <script type="text/javascript">

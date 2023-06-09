@@ -1,6 +1,6 @@
-package org.edupoll.model.dto;
+package org.edupoll.model.dto.response;
 
-public class MoimListData {
+public class MoimListResponseData {
 	String id;
 	String managerId;
 	

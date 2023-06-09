@@ -7,5 +7,4 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MoimRepository extends JpaRepository<Moim, String> {
-//	List<Moim> findbyMoimSysDateGreaterThan(PageRequest pageRequest);
 }
