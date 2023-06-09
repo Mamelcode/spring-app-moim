@@ -13,12 +13,14 @@ import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
+import org.edupoll.security.support.Account;
 import org.edupoll.service.AvatarService;
 import org.edupoll.service.UserDetailService;
 import org.edupoll.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -46,14 +48,16 @@ public class UserDetailController {
 	AvatarService avatarService;
 	
 	@GetMapping("/detail")
-	public String userDetailViewHandle(@SessionAttribute String logonId
+	public String userDetailViewHandle(@AuthenticationPrincipal Account account
 			, String error , ModelMap model) throws ParseException {
 		
+		System.out.println("detail_username ==> "+account.getUsername());
+		
 		// 유저 디테일 정보 가져오기
-		UserDetailResponseData detail = userDetailService.getUserDetail(logonId);
+		UserDetailResponseData detail = userDetailService.getUserDetail(account.getUsername());
 				
 		// 유저의 모임리스트 가져오기 / 셋팅하기
-		User user = userService.findById(logonId);
+		User user = userService.findById(account.getUsername());
 		List<Moim> moimList = user.getMoim();
 		model.addAttribute("moimList", moimList);
 		
@@ -62,7 +66,7 @@ public class UserDetailController {
 		model.addAttribute("avatars", avatars);
 		
 		// 로그온 유저의 아바타 정보 가져오기 / 셋팅하기
-		Avatar avatar = avatarService.getAvatar(logonId);
+		Avatar avatar = avatarService.getAvatar(account.getUsername());
 		if(detail != null) {
 			model.addAttribute("detail", detail);
 			if(avatar != null) {
@@ -75,19 +79,19 @@ public class UserDetailController {
 	}
 	
 	@PostMapping("/detail")
-	public String userDetailModifyHandle(@SessionAttribute String logonId,
+	public String userDetailModifyHandle(@AuthenticationPrincipal Account account,
 			UserDetailResponseData userDetailData, Model model) {
-				
-		boolean rst = userDetailService.modifyUserDetail(userDetailData, logonId);
+		
+		boolean rst = userDetailService.modifyUserDetail(userDetailData, account.getUsername());
 		logger.debug("UserdetailHandle .. {} ", rst);
 		
 		return "redirect:/user/detail";
 	}
 	
 	@GetMapping("/delete")
-	public String userDeleteHandle(@SessionAttribute String logonId) {
+	public String userDeleteHandle(@AuthenticationPrincipal Account account) {
 		
-		boolean result = userService.deleteById(logonId);
+		boolean result = userService.deleteById(account.getUsername());
 		
 		logger.debug("UserDeleteHandle .. {} ", result);
 		

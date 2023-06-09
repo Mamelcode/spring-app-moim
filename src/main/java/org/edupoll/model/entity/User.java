@@ -30,6 +30,8 @@ public class User {
 
 	@Column(name = "JOIN_DATE")
 	Date joinDate;
+	
+	String authority;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_DETAIL_IDX") // User Entity의 필드
@@ -47,18 +49,23 @@ public class User {
 	@OneToMany(mappedBy = "target", fetch =  FetchType.LAZY)
 	List<Follow> followFrom;
 	
+	public User() {
+		super();
+	}
+
+	public User(String id, String pass, String nick, String authority) {
+		super();
+		this.id = id;
+		this.pass = pass;
+		this.nick = nick;
+		this.authority = authority;
+	}
+
 	// set / get
 	public String getId() {
 		return id;
 	}
-
-	// toString
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", pass=" + pass + ", nick=" + nick + ", joinDate=" + joinDate + ", userDetail="
-				+ userDetail.toString() + "]";
-	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -101,6 +108,38 @@ public class User {
 
 	public void setMoim(List<Moim> moim) {
 		this.moim = moim;
+	}
+	
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
+	}
+
+	public List<Follow> getFollowTo() {
+		return followTo;
+	}
+
+	public void setFollowTo(List<Follow> followTo) {
+		this.followTo = followTo;
+	}
+
+	public List<Follow> getFollowFrom() {
+		return followFrom;
+	}
+
+	public void setFollowFrom(List<Follow> followFrom) {
+		this.followFrom = followFrom;
+	}
+	
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
 	// 객체 insert 전 할 작업

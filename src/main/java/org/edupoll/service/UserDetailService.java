@@ -33,7 +33,7 @@ public class UserDetailService {
 		}
 		User user = option.get();
 		
-		UserDetail userDetail = user.getUserDetail();
+		UserDetail userDetail = new UserDetail();		
 		userDetail.setAddress(userDetailData.getAddress());	
 		userDetail.setBirthday(userDetailData.getBirthday());
 		userDetail.setDescription(userDetailData.getDescription());
@@ -45,6 +45,7 @@ public class UserDetailService {
 			userDetail.setIdx(user.getUserDetail().getIdx());
 		}
 		
+		user.setUserDetail(userDetail);
 		UserDetail save = userDetailRepository.save(userDetail);
 		
 		return true;
@@ -52,18 +53,12 @@ public class UserDetailService {
 	
 	public UserDetailResponseData getUserDetail(String userId) {
 		UserDetail detail = userRepository.findById(userId).get().getUserDetail();
-		
+
 		UserDetailResponseData detailData = new UserDetailResponseData();
 		
-		if(detail.getAddress() != null) {
+		if(detail != null) {
 			detailData.setAddress(detail.getAddress());
-		}
-		
-		if(detail.getBirthday() != null) {
 			detailData.setBirthday(detail.getBirthday());
-		}
-		
-		if(detail.getDescription() != null) {
 			detailData.setDescription(detail.getDescription());
 		}
 		

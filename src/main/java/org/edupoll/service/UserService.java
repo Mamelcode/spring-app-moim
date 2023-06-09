@@ -7,6 +7,7 @@ import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
 import org.edupoll.repository.UserDetailRepository;
 import org.edupoll.repository.UserRepository;
+import org.edupoll.security.support.AccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,9 @@ public class UserService {
 	
 	@Autowired
 	UserDetailRepository userDetailRepository;
+	
+	@Autowired
+	AccountManager accountManager;
 	
 	// 회원가입 처리 서비스
 	public boolean createNewUser(User user) {
@@ -65,6 +69,4 @@ public class UserService {
 		return true;
 		
 	}
-	
-	
 }
