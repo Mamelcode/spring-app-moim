@@ -13,6 +13,7 @@ import org.edupoll.repository.MoimRepository;
 import org.edupoll.repository.ReplyRepository;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -55,7 +56,7 @@ public class MoimService {
 		
 		return list;
 	}
-	
+		
 	// 모임 개수 가져오기
 	public long countMoim() {
 		return moimRepository.count();
