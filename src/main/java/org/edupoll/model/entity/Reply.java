@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Reply {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
 	
 	String text;

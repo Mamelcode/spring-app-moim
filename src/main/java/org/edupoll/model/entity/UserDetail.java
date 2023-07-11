@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 public class UserDetail {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer idx;
 	String address;
 	Date birthday;

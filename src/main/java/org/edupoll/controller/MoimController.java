@@ -1,6 +1,7 @@
 package org.edupoll.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public class MoimController {
 		
 		model.addAttribute("cates", cates);
 		model.addAttribute("persons", persons);
+		
+		LocalDateTime.now().getMinute()
 		
 		return "main/moimCreate";
 	}
