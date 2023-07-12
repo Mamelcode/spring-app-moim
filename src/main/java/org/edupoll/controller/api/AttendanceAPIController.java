@@ -1,7 +1,7 @@
 package org.edupoll.controller.api;
 
-import org.edupoll.model.dto.request.AttendanceRequestData;
-import org.edupoll.model.dto.response.AttendanceJoinResponseData;
+import org.edupoll.model.dto.moim.AttendanceJoinResponseData;
+import org.edupoll.model.dto.moim.AttendanceRequestData;
 import org.edupoll.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

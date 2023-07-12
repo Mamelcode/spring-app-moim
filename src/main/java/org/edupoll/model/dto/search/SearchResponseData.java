@@ -1,4 +1,4 @@
-package org.edupoll.model.dto.response;
+package org.edupoll.model.dto.search;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

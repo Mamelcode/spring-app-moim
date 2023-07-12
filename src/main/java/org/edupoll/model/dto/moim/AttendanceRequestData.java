@@ -1,4 +1,4 @@
-package org.edupoll.model.dto.request;
+package org.edupoll.model.dto.moim;
 
 public class AttendanceRequestData {
 	String moimId;

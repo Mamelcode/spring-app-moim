@@ -1,4 +1,4 @@
-package org.edupoll.model.dto.response;
+package org.edupoll.model.dto.follow;
 
 public class FollowResponseData {
 	boolean result;

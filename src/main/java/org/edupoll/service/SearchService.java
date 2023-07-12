@@ -2,7 +2,7 @@ package org.edupoll.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.edupoll.model.dto.response.SearchResponseData;
+import org.edupoll.model.dto.search.SearchResponseData;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
 import org.edupoll.repository.AvatarRepository;

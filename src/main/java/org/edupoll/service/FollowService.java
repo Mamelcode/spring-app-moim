@@ -2,7 +2,7 @@ package org.edupoll.service;
 
 import java.util.Date;
 
-import org.edupoll.model.dto.response.FollowResponseData;
+import org.edupoll.model.dto.follow.FollowResponseData;
 import org.edupoll.model.entity.Follow;
 import org.edupoll.repository.FollowRepository;
 import org.edupoll.repository.UserRepository;

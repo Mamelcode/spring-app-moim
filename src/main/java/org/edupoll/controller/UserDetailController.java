@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-import org.edupoll.model.dto.response.UserDetailResponseData;
+import org.edupoll.model.dto.user.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.User;

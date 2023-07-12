@@ -1,4 +1,4 @@
-package org.edupoll.model.dto.request;
+package org.edupoll.model.dto.user;
 
 public class JoinUserRequestData {
 	String id;

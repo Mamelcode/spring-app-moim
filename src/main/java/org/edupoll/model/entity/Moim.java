@@ -1,5 +1,7 @@
 package org.edupoll.model.entity;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +32,9 @@ public class Moim {
 	
 	Integer maxPerson;
 	Integer currentPerson;
-	Integer duration;
+	LocalTime duration;
 	
-	Date targetDate;
+	LocalDateTime targetDate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "managerId")
@@ -43,25 +45,7 @@ public class Moim {
 	
 	@OneToMany(mappedBy = "moim", fetch = FetchType.LAZY)
 	List<Attendance> attendances;
-	
-	public Moim() {
-		super();
-	}
-	
-	public Moim(String id, String title, String cate, String description, Integer maxPerson, Integer currentPerson,
-			Integer duration, Date targetDate, User manager) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.cate = cate;
-		this.description = description;
-		this.maxPerson = maxPerson;
-		this.currentPerson = currentPerson;
-		this.duration = duration;
-		this.targetDate = targetDate;
-		this.manager = manager;
-	}
-	
+		
 	public String getId() {
 		return id;
 	}
@@ -109,23 +93,7 @@ public class Moim {
 	public void setCurrentPerson(Integer currentPerson) {
 		this.currentPerson = currentPerson;
 	}
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-
-	public Date getTargetDate() {
-		return targetDate;
-	}
-
-	public void setTargetDate(Date targetDate) {
-		this.targetDate = targetDate;
-	}
-
+	
 	public User getManager() {
 		return manager;
 	}
@@ -148,5 +116,21 @@ public class Moim {
 
 	public void setAttendances(List<Attendance> attendances) {
 		this.attendances = attendances;
+	}
+
+	public LocalTime getDuration() {
+		return duration;
+	}
+
+	public void setDuration(LocalTime duration) {
+		this.duration = duration;
+	}
+
+	public LocalDateTime getTargetDate() {
+		return targetDate;
+	}
+
+	public void setTargetDate(LocalDateTime targetDate) {
+		this.targetDate = targetDate;
 	}
 }

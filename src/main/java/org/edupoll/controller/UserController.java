@@ -1,7 +1,7 @@
 package org.edupoll.controller;
 
-import org.edupoll.model.dto.request.JoinUserRequestData;
-import org.edupoll.model.dto.request.LoginRequestData;
+import org.edupoll.model.dto.user.JoinUserRequestData;
+import org.edupoll.model.dto.user.LoginRequestData;
 import org.edupoll.model.entity.User;
 import org.edupoll.security.support.AccountManager;
 import org.edupoll.service.UserService;

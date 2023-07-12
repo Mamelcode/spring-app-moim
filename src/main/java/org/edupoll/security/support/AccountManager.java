@@ -2,7 +2,7 @@ package org.edupoll.security.support;
 
 import java.util.Optional;
 
-import org.edupoll.model.dto.request.JoinUserRequestData;
+import org.edupoll.model.dto.user.JoinUserRequestData;
 import org.edupoll.model.entity.User;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package org.edupoll.controller.api;
 
-import org.edupoll.model.dto.response.FollowResponseData;
+import org.edupoll.model.dto.follow.FollowResponseData;
 import org.edupoll.security.support.Account;
 import org.edupoll.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;

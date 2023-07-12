@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.edupoll.model.dto.response.MoimListResponseData;
+import org.edupoll.model.dto.moim.MoimListResponseData;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
 import org.edupoll.security.support.Account;
@@ -48,7 +48,6 @@ public class MoimController {
 	// 모임 만들기 뷰
 	@GetMapping("/create")
 	public String moimCreateViewHandle(Model model) {
-		
 		String[] cates = new String[] {"취미","학습","봉사","건강","비지니스","문화","스포츠"};
 		String[] persons = new String[] {"2","3","4","5","6","7","8","9","10"};
 		
@@ -65,7 +64,7 @@ public class MoimController {
 		logger.debug("moim crate ==> {} ", moim);
 		boolean result = moimService.createMoim(moim, account.getUsername());
 		
-		return "redirect:/moim/list";
+		return "redirect:/moim/create";
 	}
 	
 	// 모임 리스트
@@ -88,7 +87,6 @@ public class MoimController {
 			data.setCate(m.getCate());
 			data.setCurrentPerson(m.getCurrentPerson());
 			data.setDescription(m.getDescription());
-			data.setDuration(m.getDuration());
 			data.setFormatDate(sd.format(m.getTargetDate()));
 			data.setTitle(m.getTitle());
 			data.setMaxPerson(m.getMaxPerson());

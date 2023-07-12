@@ -2,7 +2,7 @@ package org.edupoll.service;
 
 import java.util.Optional;
 
-import org.edupoll.model.dto.response.UserDetailResponseData;
+import org.edupoll.model.dto.user.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.User;
 import org.edupoll.model.entity.UserDetail;
