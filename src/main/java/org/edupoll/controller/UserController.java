@@ -56,28 +56,4 @@ public class UserController {
 		}
 		return "user/login";
 	}
-	
-//	@PostMapping("/login")
-//	public String loginTaskHandle(LoginRequestData data, Model model, HttpSession session) {
-//		boolean result = userService.isValidUser(data);
-//		logger.debug("userLoginHandle : {} ", result);
-//		if(result) {
-//			session.setAttribute("logonId", data.getLoginId());
-//			return "redirect:/main";
-//		}
-//		
-//		model.addAttribute("error", true);
-//		return "user/login";
-//	}
-	
-//	@GetMapping("/logout")
-//	public String userLogOutHandle(HttpSession session) {
-//		session.removeAttribute("logonId");
-//		
-//		String logonId = (String)session.getAttribute("logonId");
-//		logger.debug("userLogOutteHandle : {} ", logonId);
-//		
-//		return "index";
-//	}
-	
 }

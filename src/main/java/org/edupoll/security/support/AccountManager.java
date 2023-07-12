@@ -26,7 +26,7 @@ public class AccountManager implements UserDetailsService{
 		Optional<User> option = userRepository.findById(username);
 		if(option.isPresent()) {
 			User user = option.get();
-			return new Account(user);		
+			return new Account(user);
 		}else {
 			throw new UsernameNotFoundException("Not Found : "+ username);
 		}

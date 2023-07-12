@@ -55,8 +55,6 @@ public class MoimController {
 		model.addAttribute("cates", cates);
 		model.addAttribute("persons", persons);
 		
-		LocalDateTime.now().getMinute()
-		
 		return "main/moimCreate";
 	}
 	

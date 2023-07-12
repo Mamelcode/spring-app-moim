@@ -1,21 +1,68 @@
-{{> /common/header}}
-<div class="container mt-5">
-	<form action="/login-task" method="post">
-		{{#error}}
-		<div class="alert alert-danger" role="alert">
-			로그인에 실패하였습니다. 재시도 해주세요.
-		</div>
-		{{/error}}
-		<div class="mb-3">
-	    <label for="exampleInputEmail1" class="form-label">아이디</label>
-	    <input type="text" class="form-control" name="username" placeholder="아이디..">
-	  </div>
-	  <div class="mb-3">
-	    <label for="exampleInputPassword1" class="form-label">비밀번호</label>
-	    <input type="password" class="form-control" id="exampleInputPassword1"
-	    placeholder="비밀번호.." name="password">
-	  </div>
-	  <button type="submit" class="btn btn-primary">로그인</button>
-	</form>
-</div>
-{{> /common/footer}}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://yunjeong920.github.io/yunjeongsite-main/css/check.css"/>
+	<link rel="stylesheet" href="https://yunjeong920.github.io/yunjeongsite-main/css/login.css"/>
+  </head>
+  <body>
+    <div class="main_wrap" id="login_new">
+        <div class="sub_div">
+            <div class="login_div">
+
+                <div class="login_wrap">
+                    <span class="font-b font-24">로그인</span>
+
+                    <form name="flogin" action="/login-task" onsubmit="return flogin_submit(this);" method="post">
+                        <input type="hidden" name="url" value="<?php echo $login_url ?>">
+
+                        <ul>
+                            <li class="login_input_id">
+                                <input type="text" class="login_input letter-05 font-14" name="username" id="login_id" placeholder="아이디" maxLength="20" required autocomplete="on">
+
+                                <i class="ri-user-follow-line"></i>
+                            </li>
+                            <li class="login_input_pw">
+                                <input type="password" class="login_input letter-05 font-14" name="password" id="login_pw" placeholder="비밀번호" maxLength="20" required autocomplete="on">
+                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13.25C17.3472 13.25 19.25 11.3472 19.25 9C19.25 6.65279 17.3472 4.75 15 4.75C12.6528 4.75 10.75 6.65279 10.75 9C10.75 9.31012 10.7832 9.61248 10.8463 9.90372L4.75 16V19.25H8L8.75 18.5V16.75H10.5L11.75 15.5V13.75H13.5L14.0963 13.1537C14.3875 13.2168 14.6899 13.25 15 13.25Z"/>
+                                    <path stroke="currentColor" d="M16.5 8C16.5 8.27614 16.2761 8.5 16 8.5C15.7239 8.5 15.5 8.27614 15.5 8C15.5 7.72386 15.7239 7.5 16 7.5C16.2761 7.5 16.5 7.72386 16.5 8Z"/>
+                                </svg>
+                            </li>
+                        </ul>
+
+                        <ul class="login_b">
+                            <li class="login_b_li1"><a href="<?php echo G5_BBS_URL ?>/password_lost.php" target="_blank" id="login_password_lost" class="color-999 letter-05 font-12 login_password_lost">로그인 정보찾기</a></li>
+                            <li class="login_b_li2">
+                                <input class="magic-checkbox" type="checkbox" name="auto_login" id="login_auto_login">
+                                <label class="font-b color-999 font-12" for="login_auto_login">자동로그인</label>
+                                <div class="cb"></div>
+                            </li>
+                            <div class="cb"></div>
+                        </ul>
+
+                        <ul class="login_btn_d">
+                            <button type="submit" class="login_btns font-16" name="">로그인</button>
+                        </ul>
+                    </form>
+                    {{#error}}
+                   		<b style="color: red; font-size: 16px;">로그인에 실패하였습니다.</b>
+                    {{/error}}
+
+                    <ul class="login_join_t">
+                        <a href="/join" class="login_join_btn letter-05 color-999 fl">아직 회원이 아니신가요?　<span class="color-000 font-b">가입하기</span></a>
+                        <a href="#" class="login_join_btn letter-05 font-b fr">메인으로</a>
+                        <div class="cb"></div>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+  </body>
+</html>
