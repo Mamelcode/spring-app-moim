@@ -72,6 +72,10 @@ nav .top_info .setting a:nth-of-type(1){
   margin-right: 15px;
 }
 
+.top_info img {
+	width: 100%;
+}
+
 .visual{
   height: 400px;
   background: #f6f6f6;
@@ -162,6 +166,11 @@ nav .top_info .setting a:nth-of-type(1){
   padding: 20px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
+}
+
+.agroup_wrap .ag_box:hover{
+	box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.5);
+	transition: 0.3s all;
 }
 
 .agroup_wrap .ag_box .category{
@@ -294,6 +303,10 @@ nav .top_info .setting a:nth-of-type(1){
   margin: 0 auto;
 }
 
+.profile_img img {
+	width: 100%;
+}
+
 .avatar_wrap{
   margin-top: 40px;
 }
@@ -328,6 +341,10 @@ nav .top_info .setting a:nth-of-type(1){
   border-radius: 50%;
   background: #ddd;
   margin-bottom: 30px;
+}
+
+.avatar_wrap ul li span img{
+	width: 100%;
 }
 
 .avatar_wrap input[type=radio]{

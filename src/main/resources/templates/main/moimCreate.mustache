@@ -12,10 +12,10 @@
   </head>
   <body>
     <nav>
-      <a href="#" class="logo">Group Talk</a>
+      <a href="/" class="logo">Group Talk</a>
       <ul class="top_info">
-        <li class="profile"><span><img src="" alt=""></span> <b>000</b>님</li>
-        <li class="setting"><a href="profile.html">설정</a><a href="#">로그아웃</a></li>
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
     </nav>
 
@@ -63,7 +63,7 @@
             </li>
             <li class="open_time">
               <div>
-                <h4>모임 시작</h4>
+                <h4>모임 종료</h4>
                 <input type="time" name="duration" value="">
               </div>
               <div class="">

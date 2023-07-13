@@ -1,146 +1,91 @@
 <html>
-<head>
-<link rel="stylesheet" type="text/css"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="profileone.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/css/initial.css"/>
-<link rel="stylesheet" href="/css/style.css?"/>
-<link
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-	rel="stylesheet">
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<style type="text/css">
-#profile-image1:hover {
-	cursor: pointer;
-}
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://webfontworld.github.io/cookierun/CookieRun.css" rel="stylesheet">
+    <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/initial.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">Group Talk</a>
+      <ul class="top_info">
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+      </ul>
+    </nav>
 
-.row {
-	margin-top: 30px;
-}
+    <div class="sub_visual">
+      <div class="width2">
+        <h2>MY PAGE</h2>
+        <img src="/image/sub.png">
+      </div>
+    </div>
 
-.profile-badge {
-	border: 1px solid #000;
-	border-radius: 5px;
-}
+    <ul class="set_nav">
+      <li><a href="">프로필 설정</a></li>
+      <li><a href="mypage.html">참여 목록</a></li>
+    </ul>
 
-.btn-info {
-	margin-bottom: 10px;
-}
+    <div class="common width2">
+      <h2 class="title">프로필 설정 변경</h2>
 
-.btn_box {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-</style>
-</head>
-<body>
-<div class="container">
-	{{#error}}
-		<p style="color: red;">모든 정보를 입력해주세요.</p>
-	{{/error}}
-	<div class="row">
-		<div class="col-md-4 col-md-offset-4 col-sm-6 col-xs-12 profile-badge">
-			<form class="user-detail text-center" method="post" action="/user/detail">
-			<div class="profile-pic" style="text-align: center; margin-top: 20px;">
-				
-				{{#url}}
-				<img src="{{url}}" id="profile-image1" height="200">
-				{{/url}}
-				{{^url}}
-				<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
-					id="profile-image1" height="200">
-				{{/url}}
-					
-				<!--  
-				<input id="profile-image-upload" class="hidden" type="file"
-					onchange="previewFile()">
-				-->
-				<div style="color: #999;"></div>
+      <form class="" action="/user/detail" method="post" class="profile_form">
+        <div class="profile_img">
+        {{#detail.avatarURL}}
+          <span><img src="{{detail.avatarURL}}"></span>
+        {{/detail.avatarURL}}
+        {{^detail.avatarURL}}
+          <span><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"></span>
+        {{/detail.avatarURL}}
+          <div class="avatar_wrap">
+            <h2>아바타 변경</h2>
+            <ul>
+		{{#detail.avatars}}
+			{{#myAvatar}}
+              <li>
+                <span><img src="{{url}}"></span>
+                <input type="radio" name="avatarId" value="{{id}}" id="{{id}}" checked="checked"><label for="{{id}}">선택하기</label>
+              </li>
+            {{/myAvatar}}
+            {{^myAvatar}}
+              <li>
+                <span><img src="{{url}}"></span>
+                <input type="radio" name="avatarId" value="{{id}}" id="{{id}}"><label for="{{id}}">선택하기</label>
+              </li>
+            {{/myAvatar}}
+        {{/detail.avatars}}
 
-			</div>
-				<div class="form-group">
-					<label for="Fname">자기소개</label>
-					
-					{{#detail}}
-					<input type="text" class="form-control" id="Fname" placeholder="자기소개.."
-						name="description" value="{{#description}}{{description}}{{/description}}">
-					{{/detail}}
-					{{^detail}}
-					<input type="text" class="form-control" id="Fname" placeholder="자기소개.."
-						name="description">
-					{{/detail}}
-					
-				</div>
+            </ul>
+          </div>
+        </div>
+        <div class="profile_info_wrap">
+          <h2>개인정보</h2>
+          <ul class="profile_info">
+            <li>
+              <h4>생년월일</h4>
+              <input type="date" name="birthday" value="{{#detail.birthday}}{{.}}{{/detail.birthday}}">
+            </li>
+            <li>
+              <h4>주소</h4>
+              <input type="text" name="address" value="{{#detail.address}}{{.}}{{/detail.address}}">
+            </li>
+            <li>
+              <h4>한줄소개</h4>
+              <input type="text" name="description" value="{{#detail.description}}{{.}}{{/detail.description}}">
+            </li>
+          </ul>
+        </div>
 
-				<div class="form-group">
-					<label for="Lname">주소</label>
-					{{#detail}}
-					<input type="text" class="form-control" id="Lname" placeholder="주소.."
-						name="address" value="{{#address}}{{address}}{{/address}}">
-					{{/detail}}
-					{{^detail}}
-					<input type="text" class="form-control" id="Lname" placeholder="주소.."
-						name="address">
-					{{/detail}}
-				</div>
+        <div class="form_btn">
+          <a href="/moim/list"><button type="button" name="button">취소</button></a>
+          <button type="submit" name="button">변경하기</button>
+        </div>
+      </form>
+    </div>
 
-				<div class="form-group">
-					<label for="mobile">생일</label>
-					<input type="date" class="form-control" id="Mobile" name="birthday">
-				</div>
-				
-				<div class="people_box">
-					<h4><span>*</span> 사용할 아바타</h4>
-					<div class="people_wrap">
-						{{#avatars}}
-						<div class="people_img" style="margin-bottom: 5px;">
-							<label for="{{id}}">
-								<img src="{{url}}"/>
-							</label>
-							<input type="radio" value="{{id}}" name="avatarId"
-									id="{{id}}"/>
-						</div>
-						{{/avatars}}
-					</div>
-				</div>
-				<div class="btn_box">
-					<button type="submit" class="btn btn-info" style="border: none;">정보수정</button>
-					<a href="/user/delete" class="btn btn-info" style="background: #FF82FF; border: none;"
-					id="delete_btn">회원탈퇴</a>
-				</div>
-			</form>
-		</div>
-	</div>
-	<p>개설한 모임 목록</p>
-	<ul>
-	{{#moimList}}
-		<li><a href="/moim/view?moimId={{id}}">{{title}}</a></li>
-	{{/moimList}}
-	</ul>
-</div>
-<!--  
-<script type="text/javascript">
-	function previewFile() {
-		var preview = document.querySelector('img');
-		var file = document.querySelector('input[type=file]').files[0];
-		var reader = new FileReader();
-
-		reader.addEventListener("load", function() {
-			preview.src = reader.result;
-		}, false);
-
-		if (file) {
-			reader.readAsDataURL(file);
-		}
-	}
-	$(function() {
-		$('#profile-image1').on('click', function() {
-			$('#profile-image-upload').click();
-		});
-	});
-</script>
--->
-</body>
+  </body>
 </html>

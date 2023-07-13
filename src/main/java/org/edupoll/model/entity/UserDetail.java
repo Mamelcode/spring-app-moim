@@ -1,7 +1,10 @@
 package org.edupoll.model.entity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import org.edupoll.model.dto.user.UserDetailReqeustData;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -22,7 +25,7 @@ public class UserDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer idx;
 	String address;
-	Date birthday;
+	LocalDate birthday;
 	String description;
 	
 	@ManyToOne
@@ -36,10 +39,11 @@ public class UserDetail {
 		super();
 	}
 	
-	@Override
-	public String toString() {
-		return "UserDetail [idx=" + idx + ", address=" + address + ", birthday=" + birthday + ", description="
-				+ description + "]";
+	public UserDetail(UserDetailReqeustData data) {
+		super();
+		this.address = data.getAddress();
+		this.birthday = LocalDate.parse(data.getBirthday(), DateTimeFormatter.ISO_DATE);
+		this.description = data.getDescription();
 	}
 
 	public Integer getIdx() {
@@ -58,11 +62,11 @@ public class UserDetail {
 		this.address = address;
 	}
 
-	public Date getBirthday() {
+	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 

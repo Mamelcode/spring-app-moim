@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+import org.edupoll.model.dto.user.UserDetailReqeustData;
 import org.edupoll.model.dto.user.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.Moim;
@@ -49,30 +50,11 @@ public class UserDetailController {
 	
 	@GetMapping("/detail")
 	public String userDetailViewHandle(@AuthenticationPrincipal Account account
-			, String error , ModelMap model) throws ParseException {
-		
-		System.out.println("detail_username ==> "+account.getUsername());
-		
-		// 유저 디테일 정보 가져오기
+			, String error , Model model) throws ParseException {
+		System.out.println("로그인 닉네임 : "+ account.getNick() + "/" + account.getUsername());
 		UserDetailResponseData detail = userDetailService.getUserDetail(account.getUsername());
-				
-		// 유저의 모임리스트 가져오기 / 셋팅하기
-		User user = userService.findById(account.getUsername());
-		List<Moim> moimList = user.getMoim();
-		model.addAttribute("moimList", moimList);
 		
-		// 아바타 전체 리스트 가져오기 / 셋팅하기
-		List<Avatar> avatars = avatarService.getAvatars();
-		model.addAttribute("avatars", avatars);
-		
-		// 로그온 유저의 아바타 정보 가져오기 / 셋팅하기
-		Avatar avatar = avatarService.getAvatar(account.getUsername());
-		if(detail != null) {
-			model.addAttribute("detail", detail);
-			if(avatar != null) {
-				model.addAttribute("url", avatar.getUrl());
-			}
-		}
+		model.addAttribute("detail", detail);
 		
 		// 디테일 화면으로 넘기기
 		return "user/detail";
@@ -80,9 +62,9 @@ public class UserDetailController {
 	
 	@PostMapping("/detail")
 	public String userDetailModifyHandle(@AuthenticationPrincipal Account account,
-			UserDetailResponseData userDetailData, Model model) {
+			UserDetailReqeustData data, Model model) {
 		
-		boolean rst = userDetailService.modifyUserDetail(userDetailData, account.getUsername());
+		boolean rst = userDetailService.modifyUserDetail(data, account.getUsername());
 		logger.debug("UserdetailHandle .. {} ", rst);
 		
 		return "redirect:/user/detail";

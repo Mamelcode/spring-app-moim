@@ -1,7 +1,11 @@
 package org.edupoll.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.edupoll.model.dto.user.AvatarResponseData;
+import org.edupoll.model.dto.user.UserDetailReqeustData;
 import org.edupoll.model.dto.user.UserDetailResponseData;
 import org.edupoll.model.entity.Avatar;
 import org.edupoll.model.entity.User;
@@ -24,44 +28,70 @@ public class UserDetailService {
 	@Autowired
 	AvatarRepository avatarRepository;
 	
-	public boolean modifyUserDetail(UserDetailResponseData userDetailData, String userId) {
+	// 유저 디테일 정보 수정
+	public boolean modifyUserDetail(UserDetailReqeustData data, String userId) {
 		
+		// 유저를 찾는다.
 		Optional<User> option = userRepository.findById(userId);
 		
+		// 유저가 비어있는지 확인한다.
 		if(option.isEmpty()) {
 			return false;
 		}
+		
+		// 유저가 있으면 유저객체를 만든다.
 		User user = option.get();
 		
-		UserDetail userDetail = new UserDetail();		
-		userDetail.setAddress(userDetailData.getAddress());	
-		userDetail.setBirthday(userDetailData.getBirthday());
-		userDetail.setDescription(userDetailData.getDescription());
 		
-		if(userDetailData.getAvatarId() != null)
-			userDetail.setAvatar(avatarRepository.findById(userDetailData.getAvatarId()).get());
+		// 세이브할 유저 디테일 객체를 만든다.
+		UserDetail detail = new UserDetail(data);
 		
+		// 아바타를 선택했는지 확인한다.
+		if(data.getAvatarId() != null)
+			detail.setAvatar(avatarRepository.findById(data.getAvatarId()).get());
+		
+		// 새로 저장하는건지 기존껄 수정하는건지 확인한다.
 		if(user.getUserDetail() != null) {			
-			userDetail.setIdx(user.getUserDetail().getIdx());
+			data.setIdx(user.getUserDetail().getIdx());
 		}
 		
-		user.setUserDetail(userDetail);
-		UserDetail save = userDetailRepository.save(userDetail);
+		// 세이브한다.
+		user.setUserDetail(detail);
+		userDetailRepository.save(detail);
 		
 		return true;
 	}
 	
+	
+	// 유저 디테일 정보 가져오기
 	public UserDetailResponseData getUserDetail(String userId) {
 		UserDetail detail = userRepository.findById(userId).get().getUserDetail();
+		
+		// 아바타 정보 리스트를 가져온다
+		List<Avatar> avatars = avatarRepository.findAll();
 
-		UserDetailResponseData detailData = new UserDetailResponseData();
-		
-		if(detail != null) {
-			detailData.setAddress(detail.getAddress());
-			detailData.setBirthday(detail.getBirthday());
-			detailData.setDescription(detail.getDescription());
+		if(detail != null) {			
+			// 아바타 응답 dto를 담을 리스트를 만든다.
+			List<AvatarResponseData> avatarsData = new ArrayList<>();
+			
+			// 반복문을 돌면서 나의 아바타인지 확인하여 참 / 거짓을 확인한다.
+			for(Avatar a : avatars) {
+				AvatarResponseData avatarData = new AvatarResponseData(a);
+				if(detail.getAvatar().getId().equals(a.getId())) {
+					avatarData.setMyAvatar(true);
+				}
+				avatarsData.add(avatarData);
+			}
+			
+			// 유저 디테일 응답 dto에 유저디테일과 아바타리스트를 담아서 리턴한다.
+			UserDetailResponseData detailData = new UserDetailResponseData(detail, avatarsData);
+			return detailData;
+		}else {
+			List<AvatarResponseData> avatarsData = new ArrayList<>();
+			for(Avatar a : avatars) {
+				avatarsData.add(new AvatarResponseData(a));
+			}
+			return new UserDetailResponseData(avatarsData);
 		}
-		
-		return detailData;
 	}
 }

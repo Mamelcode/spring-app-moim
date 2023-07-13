@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.edupoll.model.dto.moim.AttendanceRequestData;
+import org.edupoll.model.dto.moim.MoimListResponseData;
 import org.edupoll.model.entity.Attendance;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
@@ -49,12 +50,12 @@ public class MoimService {
 	}
 	
 	// 모임 페이징처리해서 가져오기
-	public List<Moim> findByMoimAll(int page) {
+	public List<MoimListResponseData> findByMoimAll(int page) {
 		Sort sort = Sort.by(Direction.ASC, "targetDate");
 		
-		List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 9, sort)).toList();
+		List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 12, sort)).toList();
 		
-		return list;
+		return list.stream().map(MoimListResponseData::new).toList();
 	}
 		
 	// 모임 개수 가져오기
@@ -83,12 +84,16 @@ public class MoimService {
 		List<Reply> replys = moim.getReplys();
 		List<Attendance> attendancens = moim.getAttendances();
 		
-		for(Reply r : replys) {
-			replyRepository.deleteById(r.getId());
+		if(!replys.isEmpty()) {
+			for(Reply r : replys) {
+				replyRepository.deleteById(r.getId());
+			}			
 		}
 		
-		for(Attendance a : attendancens) {
-			attendanceRepository.deleteById(a.getId());
+		if(!attendancens.isEmpty()) {
+			for(Attendance a : attendancens) {
+				attendanceRepository.deleteById(a.getId());
+			}
 		}
 		
 		moimRepository.delete(moim);
