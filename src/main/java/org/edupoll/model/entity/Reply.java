@@ -1,5 +1,7 @@
 package org.edupoll.model.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,27 +21,34 @@ public class Reply {
 	Integer id;
 	
 	String text;
-	String password;
+	
+	LocalDateTime dates;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "moimId")
 	Moim moim;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId")
+	User user;
+	
 	public Reply() {
 		super();
 	}
-	
-	public Reply(Integer id, String text, String password, Moim moim) {
+
+	public Reply(String text, Moim moim, User user) {
 		super();
-		this.id = id;
 		this.text = text;
-		this.password = password;
 		this.moim = moim;
+		this.user = user;
 	}
-	
-	@Override
-	public String toString() {
-		return "Reply [id=" + id + ", text=" + text + ", password=" + password + ", moim=" + moim + "]";
+
+	public LocalDateTime getDates() {
+		return dates;
+	}
+
+	public void setDates(LocalDateTime dates) {
+		this.dates = dates;
 	}
 
 	public Integer getId() {
@@ -56,20 +66,25 @@ public class Reply {
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	
 	public Moim getMoim() {
 		return moim;
 	}
 
 	public void setMoim(Moim moim) {
 		this.moim = moim;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	@PrePersist
+	void prePersist() {
+		this.dates = LocalDateTime.now();
 	}
 }

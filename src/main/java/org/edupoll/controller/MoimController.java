@@ -3,7 +3,11 @@ package org.edupoll.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.edupoll.model.dto.moim.MoimDetailResponseData;
 import org.edupoll.model.dto.moim.MoimListResponseData;
+import org.edupoll.model.dto.moim.MoimModifyRequestData;
+import org.edupoll.model.dto.moim.MoimModifyResponseData;
+import org.edupoll.model.dto.reply.ReplyCreateRequestData;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
 import org.edupoll.model.entity.User;
@@ -71,33 +75,54 @@ public class MoimController {
 	// 모임 디테일 뷰
 	@GetMapping("/view")
 	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId,@AuthenticationPrincipal Account account, Model model) {
-		Moim moim = moimService.findByMoim(moimId);
-		logger.debug("View moim Handle ==> {}", moim);
+		MoimDetailResponseData moim = moimService.findByMoim(moimId, account.getUsername(), page);
 		
-		List<Reply> replys = replyService.findByReplys(moimId, page);
-		logger.debug("View replys Handle ==> {}", replys);
-		
-		long cnt = replyService.findByReplysCount(moimId);
-		List<String> pages = new ArrayList<>();
-		for(int i=1; i<=cnt/10 + (cnt % 10 > 0 ? 1 : 0); i++) {
-			pages.add(String.valueOf(i));
-			if(i == 10) {
-				break;
-			}
-		}
-		model.addAttribute("pages", pages);	
-		model.addAttribute("replys", replys);
 		model.addAttribute("moim", moim);
-		model.addAttribute("isJoined", attendanceService.isJoined(account.getUsername(), moimId));
 		
 		return "main/moimView";
 	}
 	
-	// 모임 댓글 처리
+	// 모임 댓글 등록처리
 	@PostMapping("/reply-create")
-	public String replyCreateHandle(Reply reply) {		
-		replyService.crateReply(reply);
+	public String replyCreateHandle(@AuthenticationPrincipal Account account, ReplyCreateRequestData reply) {
 		
-		return "redirect:/moim/view?moimId="+reply.getMoim().getId();
+		replyService.crateReply(reply, account.getUsername());
+		
+		return "redirect:/moim/view?moimId="+reply.getMoimId();
+	}
+	
+	// 모임 삭제 처리
+	@GetMapping("/delete")
+	public String moimDeleteHandle(String moimId) {
+		
+		boolean result = moimService.deleteByMoim(moimId);
+		
+		return "redirect:/";
+	}
+	
+	// 모임 수정 뷰
+	@GetMapping("/modify")
+	public String moimModifyViewHandle(String moimId, Model model) {
+		
+		MoimModifyResponseData moim = moimService.modifyByMoim(moimId);
+		
+		model.addAttribute("moim", moim);
+		
+		String[] cates = new String[] {"취미","학습","봉사","건강","비지니스","문화","스포츠"};
+		String[] persons = new String[] {"2","3","4","5","6","7","8","9","10"};
+		
+		model.addAttribute("cates", cates);
+		model.addAttribute("persons", persons);
+		
+		return "main/moimModify";
+	}
+	
+	// 모임 수정 처리
+	@PostMapping("modify")
+	public String moimModifyTaskHandle(MoimModifyRequestData data) {
+		
+		
+		
+		return "redirect:/moim/view?moimId="+data.getId();
 	}
 }

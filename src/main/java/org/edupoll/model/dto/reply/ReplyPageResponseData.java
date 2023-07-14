@@ -1,48 +1,54 @@
-package org.edupoll.model.dto.moim;
+package org.edupoll.model.dto.reply;
 
 import java.util.List;
 
-public class MoimPageResponseData {
+public class ReplyPageResponseData {
+
+	List<ReplyResponseData> replies;
 	
-	List<MoimListResponseData> moims;
-	
-	List<MoimPageData> pages; // 페이지 몇개까지 보이게 할건지?
+	List<ReplyPageData> pages;
 	
 	int viewPage; // 글 토탈 갯수
-			
+	
 	int nextPage; // 다음페이지
 	int prevPage; // 이전페이지
 	
 	boolean prev; // 다음페이지가 있는지?
 	boolean next; // 이전페이지가 있는지?
 	
-	public MoimPageResponseData() {
+	public ReplyPageResponseData() {
 		super();
 	}
-
-	public MoimPageResponseData(List<MoimPageData> pages, int viewPage, int nextPage, int prevPage, 
-			boolean prev, boolean next, List<MoimListResponseData> moims) {
+	
+	public ReplyPageResponseData(List<ReplyResponseData> replies, List<ReplyPageData> pages, int viewPage, int nextPage,
+			int prevPage, boolean prev, boolean next) {
 		super();
+		this.replies = replies;
 		this.pages = pages;
 		this.viewPage = viewPage;
 		this.nextPage = nextPage;
 		this.prevPage = prevPage;
 		this.prev = prev;
 		this.next = next;
-		this.moims = moims;
 	}
-	
-	public List<MoimListResponseData> getMoims() {
-		return moims;
+
+	public List<ReplyResponseData> getReplies() {
+		return replies;
 	}
-	public void setMoims(List<MoimListResponseData> datas) {
-		this.moims = datas;
+	public void setReplies(List<ReplyResponseData> replies) {
+		this.replies = replies;
 	}
-	public List<MoimPageData> getPages() {
+	public List<ReplyPageData> getPages() {
 		return pages;
 	}
-	public void setPages(List<MoimPageData> pages) {
+	public void setPages(List<ReplyPageData> pages) {
 		this.pages = pages;
+	}
+	public int getViewPage() {
+		return viewPage;
+	}
+	public void setViewPage(int viewPage) {
+		this.viewPage = viewPage;
 	}
 	public int getNextPage() {
 		return nextPage;
@@ -67,11 +73,5 @@ public class MoimPageResponseData {
 	}
 	public void setNext(boolean next) {
 		this.next = next;
-	}
-	public int getViewPage() {
-		return viewPage;
-	}
-	public void setViewPage(int viewPage) {
-		this.viewPage = viewPage;
 	}
 }

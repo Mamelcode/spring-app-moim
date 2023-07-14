@@ -49,6 +49,9 @@ public class User {
 	@OneToMany(mappedBy = "target", fetch =  FetchType.LAZY)
 	List<Follow> followFrom;
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<Reply> replies;
+	
 	public User() {
 		super();
 	}
@@ -141,11 +144,18 @@ public class User {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
+	
+	public List<Reply> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Reply> replies) {
+		this.replies = replies;
+	}
 
 	// 객체 insert 전 할 작업
 	@PrePersist
 	public void doPrepersist() {
-		System.out.println("doPrepersist");
 		joinDate = new Date();
 	}
 }

@@ -14,7 +14,7 @@
       <a href="/" class="logo">Group Talk</a>
       {{#SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
       <ul class="top_info">
-        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
         <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
       {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
@@ -41,10 +41,10 @@
     <div class="all_group width common">
       <h2 class="title">전체 리스트</h2>
       <div class="agroup_wrap">
-	       {{#moims}}
+	       {{#moims.moims}}
 	       <div class="ag_box">
 	         <span class="category">{{cate}}</span>
-	         <h2><a href="#">{{title}}</a></h2>
+	         <h2><a href="/moim/view?moimId={{id}}">{{title}}</a></h2>
 	         <h3><i class="ri-calendar-line"></i>모임날짜<span>{{formatDate}}</span></h3>
 	         <h3><i class="ri-time-line"></i>모임시간<span>{{timeStart}} ~ {{timeEnd}}</span></h3>
 	         <ul>
@@ -52,16 +52,33 @@
 	           <li><p>{{managerId}}</p></li>
 	         </ul>
 	       </div>
-	       {{/moims}}
+	       {{/moims.moims}}
       </div>
 		
       <div class="page_nav">
-        <a href="#"><</a>
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">></a>
+      
+      	{{#moims.prev}}
+        <a href="/?page={{moims.prevPage}}"><</a>
+        {{/moims.prev}}
+      	{{^moims.prev}}
+        <a><</a>
+        {{/moims.prev}}
+        
+        {{#moims.pages}}
+        	{{#flag}}
+        	<a href="/?page={{page}}" class="pageActive">{{page}}</a>
+        	{{/flag}}
+        	{{^flag}}
+        	<a href="/?page={{page}}">{{page}}</a>
+        	{{/flag}}
+        {{/moims.pages}}
+        
+        {{#moims.next}}
+        <a href="/?page={{moims.nextPage}}">></a>
+      	{{/moims.next}}
+        {{^moims.next}}
+        <a>></a>
+      	{{/moims.next}}
       </div>
     </div>
 
@@ -149,7 +166,7 @@
     <div class="open_wrap common">
       <div class="width">
         <h2 class="title">찾는 모임이 없으시다면?</h2>
-        <a href="open.html">모임 개설하기</a>
+        <a href="/moim/create">모임 개설하기</a>
       </div>
     </div>
   </body>

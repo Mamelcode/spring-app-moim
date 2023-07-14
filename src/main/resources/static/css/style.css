@@ -623,7 +623,7 @@ nav .top_info .setting a:nth-of-type(1){
   line-height: 40px;
 }
 
-.meet_title span a:nth-child(1){
+.meet_check{
   background: #91C788;
   display: inline-block;
   color: #fff;
@@ -631,7 +631,7 @@ nav .top_info .setting a:nth-of-type(1){
   margin-right: 10px;
 }
 
-.meet_title span a:nth-child(2){
+.meet_close{
   background: #FF9B9B;
   display: inline-block;
   color: #fff;
@@ -667,6 +667,10 @@ nav .top_info .setting a:nth-of-type(1){
   margin-right: 15px;
   font-size: 1.4rem;
   color: #555;
+}
+
+.comment_info img{
+	width: 100%;
 }
 
 .comment_wrap .comment_box .comment_info h3{
@@ -705,6 +709,7 @@ nav .top_info .setting a:nth-of-type(1){
   resize: none;
   background: #f9f9f9;
   padding: 10px;
+  border: 1px solid #888; 
 }
 
 .comment_btn{
@@ -744,4 +749,18 @@ nav .top_info .setting a:nth-of-type(1){
 
 .com_edit a:hover{
   color: red;
+}
+
+.pageActive  {
+	color: white;
+	background: black;
+}
+
+.no_reply {
+	color: #888;
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	margin-top: 50px;
 }

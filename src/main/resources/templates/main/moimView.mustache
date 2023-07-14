@@ -1,59 +1,108 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>우리들의 모임</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://webfontworld.github.io/cookierun/CookieRun.css" rel="stylesheet">
+    <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/initial.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+  	
+    <nav>
+      <a href="/" class="logo">Group Talk</a>
+      <ul class="top_info">
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+      </ul>
+    </nav>
 
-	<div style="display: flex; flex-direction: column; align-items: center;
-	width: 960px">
-		<div style="border: 1px solid #ccc; width: 50%;">
-			{{#moim}}
-			<p>{{title}} (<span id="cp">{{currentPerson}}</span>/{{maxPerson}})</p>
-			<p>{{cate}}</p>
-			<p>{{description}}</p>
-			<p>{{manager.id}}</p>
-			<p>{{#manager.userDetail.avatar.id}}{{.}}{{/manager.userDetail.avatar.id}}</p>
-			{{/moim}}
-		</div>
-		<div style="border: 1px solid #ccc; width: 50%; text-align: center;
-		margin: 10px 0px;">
-			<p>참가자 목록</p>
-			<div id="attendance">
-			{{#moim.attendances}}
-				<span>@{{user.id}}</span>
-			{{/moim.attendances}}
-			</div>
-		</div>
-		<div style="border: 1px solid #ccc; width: 50%;">
-			<p>========댓글구간========</p>
-			<ul>
-			{{#replys}}
-				<li>내용 : {{text}}</li>
-			{{/replys}}
-			</ul>
-		</div>
-		
-		<div style="border: 1px solid #ccc; width: 50%; margin: 10px 0px;">
-			<form action="/moim/reply-create" method="post">
-				<div style="display: flex; flex-direction: column;">
-					<input type="hidden" name="moim.id" value="{{moim.id}}">
-					<textarea name="text" placeholder="댓글을 남겨주세요.." style="resize: none;">
-					</textarea>
-					<input type="password" name="password" placeholder="비밀번호..">
-					<button type="submit">등록</button>
-				</div>
-			</form>
-			{{#isJoined}}
-				<button id="join-bt" data-status="joined">참가취소</button>
-			{{/isJoined}}
-			{{^isJoined}}
-				<button id="join-bt" data-status="not-joined">참가신청</button>
-			{{/isJoined}}
-		</div>
-		<a href="/moim/list">목록으로</a>
-	</div>
+    <div class="sub_visual sub_visual2">
+      <div class="width2">
+        <h2>MOIM</h2>
+        <img src="/image/sub2.png" alt="">
+      </div>
+    </div>
+
+    <div class="common width2">
+      <h2 class="title meet_title">
+        [{{moim.cate}}] {{moim.title}}
+        <span>
+        {{#moim.isCreator}}
+          <a class="meet_check" href="/moim/modify?moimId={{moim.id}}"><i class="ri-close-line"></i> 모임수정</a>
+          <a class="meet_close" href="/moim/delete?moimId={{moim.id}}"><i class="ri-close-line"></i> 모임삭제</a>
+        {{/moim.isCreator}}
+        {{^moim.isCreator}}
+	        {{#moim.isJoined}}
+	          <a class="meet_close" href="#"><i class="ri-close-line"></i> 참가취소</a>
+	        {{/moim.isJoined}}
+	        {{^moim.isJoined}}
+	          <a class="meet_check" href="#"><i class="ri-check-line"></i> 참가신청</a>
+	        {{/moim.isJoined}}
+        {{/moim.isCreator}}
+        </span>
+      </h2>
+      <ul class="meet_info">
+        <li><h2>모임날짜</h2> <span>{{moim.formatDate}}</span></li>
+        <li><h2>모임시간</h2> <span>{{moim.timeStart}}</span> ~ <span>{{moim.timeEnd}}</span></li>
+      </ul>
+      <div class="meet_wrap">
+        <h3>모임목적</h3>
+        <div class="meet_text">
+          <span>{{moim.description}}</span>
+        </div>
+      </div>
+      <div class="avatar_wrap">
+        <h2>참가자 {{moim.currentPerson}}/{{moim.maxPerson}}</h2>
+        <ul>
+          <li>
+            <span></span>
+            <p>이름</p>
+          </li>
+          <li>
+            <span></span>
+            <p>이름</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="comment_wrap">
+        <h2 class="title">댓글</h2>
+        
+        {{#moim.pageReply.replies}}
+        <div class="comment_box">
+          <ul>
+            <li>
+              <div class="comment_info">
+                <h3><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span>{{writer}}</h3>
+                <h3><i class="ri-calendar-line"></i>{{dates}}</h3>
+              </div>
+            <li class="com_edit"><a href="#"><i class="ri-edit-line"></i></a><a href="#"><i class="ri-delete-bin-line"></i></a></li>
+          </ul>
+          <p>{{text}}</p>
+        </div>
+        {{/moim.pageReply.replies}}
+        {{^moim.pageReply.replies}}
+        <span class="no_reply">등록된 댓글이 없습니다.</span>
+        {{/moim.pageReply.replies}}
+        
+      </div>
+
+
+      <form class="comment_form" action="/moim/reply-create" method="post">
+      	<input type="hidden" name="moimId" value="{{moim.id}}">
+        <textarea name="text" rows="7" cols="70" placeholder="댓글을 입력해주세요."></textarea>
+        <div class="comment_btn">
+          <span><input type="checkbox" name="" value=""><label for="">비밀글</label></span>
+          <button type="submit" name="button">댓글등록</button>
+        </div>
+      </form>
+    </div>
+
+{{#flag}}
 <script type="text/javascript">
 	document.querySelector("#join-bt").onclick = (evt) => {
 		const xhr = new XMLHttpRequest();
@@ -111,5 +160,6 @@
 		};
 	};
 </script>
+{{/flag}}
 </body>
 </html>

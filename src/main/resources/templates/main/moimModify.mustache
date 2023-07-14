@@ -30,31 +30,25 @@
       <h2 class="title">모임 정보 입력</h2>
 
       <form class="" action="/moim/create" method="post" class="profile_form">
-      <input type="hidden" name="currentPerson" value="1">
+      <input type="hidden" name="id" value="{{moim.id}}">
         <div class="open_info_wrap">
           <ul class="open_info">
             <li>
               <h4>모임명</h4>
-              <input type="text" name="title" value="">
+              <input type="text" name="title" value="{{moim.title}}">
             </li>
-            <!--  
-            <li>
-              <h4>모임 장소</h4>
-              <input type="text" name="place" value="">
-            </li>
-            -->
             <li>
               <h4>모임 목적</h4>
-              <textarea name="description" rows="8" cols="80"></textarea>
+              <textarea name="description" rows="8" cols="80">{{moim.description}}</textarea>
             </li>
             <li class="open_time">
               <div class="">
                 <h4>모임 날짜</h4>
-                <input type="datetime-local" name="targetDate" value="">
+                <input type="datetime-local" name="targetDate" value="{{moim.targetDate}}">
               </div>
               <div class="">
                 <h4>카테고리</h4>
-                <select class="people" name="cate">
+                <select class="people" name="cate" id="cate">
 	                {{#cates}}
 	                  <option value="{{.}}">{{.}}</option>
 	                {{/cates}}
@@ -64,11 +58,11 @@
             <li class="open_time">
               <div>
                 <h4>모임 종료</h4>
-                <input type="time" name="duration" value="">
+                <input type="time" name="duration" value="{{moim.duration}}">
               </div>
               <div class="">
                 <h4>정원</h4>
-                <select class="people" name="maxPerson">
+                <select class="people" name="maxPerson" id="maxPerson">
 	                {{#persons}}
 	                  <option value="{{.}}">{{.}}</option>
 	                {{/persons}}
@@ -80,10 +74,19 @@
 
         <div class="form_btn">
           <a href="/"><button type="button" name="button">취소</button></a>
-          <button type="submit" name="button">모임 만들기</button>
+          <button type="submit" name="button">모임 수정</button>
         </div>
       </form>
     </div>
-
+<script type="text/javascript">
+	$(function(){
+		$("#cate").val("{{moim.cate}}").attr("selected","selected");
+	});
+</script>
+<script type="text/javascript">
+	$(function(){
+		$("#maxPerson").val("{{moim.maxPerson}}").attr("selected","selected");
+	});
+</script>
   </body>
 </html>

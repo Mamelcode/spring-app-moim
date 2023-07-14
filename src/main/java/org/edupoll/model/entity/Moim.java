@@ -24,8 +24,6 @@ public class Moim {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	String id;
 	
-//	String managerId;
-	
 	String title;
 	String cate;
 	String description;
