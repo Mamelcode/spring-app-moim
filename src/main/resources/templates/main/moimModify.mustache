@@ -15,7 +15,7 @@
       <a href="/" class="logo">Group Talk</a>
       <ul class="top_info">
         <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
-        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
     </nav>
 
@@ -29,8 +29,9 @@
     <div class="common width2">
       <h2 class="title">모임 정보 입력</h2>
 
-      <form class="" action="/moim/create" method="post" class="profile_form">
+      <form class="" action="/moim/modify" method="post" class="profile_form">
       <input type="hidden" name="id" value="{{moim.id}}">
+      <input type="hidden" name="currentPerson" value="{{moim.currentPerson}}">
         <div class="open_info_wrap">
           <ul class="open_info">
             <li>

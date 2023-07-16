@@ -1,16 +1,10 @@
 package org.edupoll.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.edupoll.model.dto.moim.MoimDetailResponseData;
-import org.edupoll.model.dto.moim.MoimListResponseData;
 import org.edupoll.model.dto.moim.MoimModifyRequestData;
 import org.edupoll.model.dto.moim.MoimModifyResponseData;
 import org.edupoll.model.dto.reply.ReplyCreateRequestData;
 import org.edupoll.model.entity.Moim;
-import org.edupoll.model.entity.Reply;
-import org.edupoll.model.entity.User;
 import org.edupoll.security.support.Account;
 import org.edupoll.service.AttendanceService;
 import org.edupoll.service.MoimService;
@@ -19,10 +13,7 @@ import org.edupoll.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +44,7 @@ public class MoimController {
 	// 모임 만들기 뷰
 	@GetMapping("/create")
 	public String moimCreateViewHandle(Model model, HttpSession session) {
-		String[] cates = new String[] {"취미","학습","봉사","건강","비지니스","문화","스포츠"};
+		String[] cates = new String[] {"취미","학습","봉사","건강","비지니스","문화","스포츠","기타"};
 		String[] persons = new String[] {"2","3","4","5","6","7","8","9","10"};
 		
 		model.addAttribute("cates", cates);
@@ -74,10 +65,17 @@ public class MoimController {
 	
 	// 모임 디테일 뷰
 	@GetMapping("/view")
-	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId,@AuthenticationPrincipal Account account, Model model) {
+	public String moimViewHandle(@RequestParam(defaultValue = "1")int page, String moimId, 
+			@AuthenticationPrincipal Account account, Model model, @RequestParam(defaultValue = "0")int error) {
 		MoimDetailResponseData moim = moimService.findByMoim(moimId, account.getUsername(), page);
 		
 		model.addAttribute("moim", moim);
+		
+		if(error == 1) {
+			model.addAttribute("error", "이미 참가중인 모임 입니다.");
+		}else if(error == 2) {
+			model.addAttribute("error", "참가 인원이 초과 하였습니다.");
+		}
 		
 		return "main/moimView";
 	}
@@ -104,7 +102,7 @@ public class MoimController {
 	@GetMapping("/modify")
 	public String moimModifyViewHandle(String moimId, Model model) {
 		
-		MoimModifyResponseData moim = moimService.modifyByMoim(moimId);
+		MoimModifyResponseData moim = moimService.findByMoim(moimId);
 		
 		model.addAttribute("moim", moim);
 		
@@ -118,10 +116,10 @@ public class MoimController {
 	}
 	
 	// 모임 수정 처리
-	@PostMapping("modify")
+	@PostMapping("/modify")
 	public String moimModifyTaskHandle(MoimModifyRequestData data) {
 		
-		
+		boolean result = moimService.updateMoim(data);
 		
 		return "redirect:/moim/view?moimId="+data.getId();
 	}

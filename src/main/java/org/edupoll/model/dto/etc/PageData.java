@@ -1,16 +1,16 @@
-package org.edupoll.model.dto.moim;
+package org.edupoll.model.dto.etc;
 
-public class MoimPageData {
+public class PageData {
 	String page;
 	boolean flag;
 	
 	
 	
-	public MoimPageData() {
+	public PageData() {
 		super();
 	}
 	
-	public MoimPageData(String page, boolean flag) {
+	public PageData(String page, boolean flag) {
 		super();
 		this.page = page;
 		this.flag = flag;

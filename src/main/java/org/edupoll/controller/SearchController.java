@@ -43,25 +43,30 @@ public class SearchController {
 		return "main/search";
 	}
 	
+//	@GetMapping("/search")
+//	public String SearchViewHandle(@RequestParam(defaultValue = "1")int page, String q, Model model, 
+//			@AuthenticationPrincipal Account account) {	
+//		
+//		// 페이지 계산 구간
+//		long cnt = searchService.findByQuery(q).size();
+//		System.out.println("cnt => "+ cnt);
+//		List<String> pages = new ArrayList<>();
+//		for(int i=1; i<=cnt/5 + (cnt % 5 > 0 ? 1 : 0); i++) {
+//			pages.add(String.valueOf(i));
+//		}
+//		model.addAttribute("pages", pages);	
+//		model.addAttribute("q", q);
+//			
+//		// DB에서 페이징 처리 후 유저정보를 가져옴(user, userdetail, avatars)
+//		List<SearchResponseData> searchDatas = searchService.findByQuery2(account.getUsername(), q, PageRequest.of(page-1, 5));
+//		
+//		model.addAttribute("searchDatas", searchDatas);
+//		
+//		return "main/search";
+//	}
+	
 	@GetMapping("/search")
-	public String SearchViewHandle(@RequestParam(defaultValue = "1")int page, String q, Model model, 
-			@AuthenticationPrincipal Account account) {	
-		
-		// 페이지 계산 구간
-		long cnt = searchService.findByQuery(q).size();
-		System.out.println("cnt => "+ cnt);
-		List<String> pages = new ArrayList<>();
-		for(int i=1; i<=cnt/5 + (cnt % 5 > 0 ? 1 : 0); i++) {
-			pages.add(String.valueOf(i));
-		}
-		model.addAttribute("pages", pages);	
-		model.addAttribute("q", q);
-			
-		// DB에서 페이징 처리 후 유저정보를 가져옴(user, userdetail, avatars)
-		List<SearchResponseData> searchDatas = searchService.findByQuery2(account.getUsername(), q, PageRequest.of(page-1, 5));
-		
-		model.addAttribute("searchDatas", searchDatas);
-		
+	public String searchViewHandle() {
 		return "main/search";
 	}
 	

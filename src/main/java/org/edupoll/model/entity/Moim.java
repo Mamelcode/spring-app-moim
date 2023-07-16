@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
+import org.edupoll.model.dto.moim.MoimModifyRequestData;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
@@ -43,7 +44,7 @@ public class Moim {
 	
 	@OneToMany(mappedBy = "moim", fetch = FetchType.LAZY)
 	List<Attendance> attendances;
-		
+	
 	public String getId() {
 		return id;
 	}

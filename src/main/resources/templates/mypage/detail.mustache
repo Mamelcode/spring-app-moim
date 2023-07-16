@@ -14,7 +14,7 @@
       <a href="/" class="logo">Group Talk</a>
       <ul class="top_info">
         <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
-        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
     </nav>
 
@@ -26,14 +26,16 @@
     </div>
 
     <ul class="set_nav">
-      <li><a href="">프로필 설정</a></li>
-      <li><a href="mypage.html">참여 목록</a></li>
+      <li><a href="/mypage/detail" class="mypage_active">프로필 설정</a></li>
+      <li><a href="/mypage/attendance">모임참여 목록</a></li>
+      <li><a href="/mypage/creator">모임개설 목록</a></li>
+      <li><a href="/mypage/reply">댓글 목록</a></li>
     </ul>
 
     <div class="common width2">
       <h2 class="title">프로필 설정 변경</h2>
 
-      <form class="" action="/user/detail" method="post" class="profile_form">
+      <form class="" action="/mypage/detail" method="post" class="profile_form">
         <div class="profile_img">
         {{#detail.avatarURL}}
           <span><img src="{{detail.avatarURL}}"></span>
@@ -81,7 +83,7 @@
         </div>
 
         <div class="form_btn">
-          <a href="/moim/list"><button type="button" name="button">취소</button></a>
+          <a href="/"><button type="button" name="button">취소</button></a>
           <button type="submit" name="button">변경하기</button>
         </div>
       </form>

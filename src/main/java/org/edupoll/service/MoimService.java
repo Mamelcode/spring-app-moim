@@ -1,10 +1,15 @@
 package org.edupoll.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.edupoll.model.dto.moim.AttendanceRequestData;
+import org.edupoll.model.dto.attendance.AttendanceJoinResponseData;
+import org.edupoll.model.dto.etc.PageData;
 import org.edupoll.model.dto.moim.MoimDetailResponseData;
 import org.edupoll.model.dto.moim.MoimListResponseData;
 import org.edupoll.model.dto.moim.MoimModifyRequestData;
@@ -13,7 +18,7 @@ import org.edupoll.model.dto.moim.MoimPageResponseData;
 import org.edupoll.model.dto.reply.ReplyPageData;
 import org.edupoll.model.dto.reply.ReplyPageResponseData;
 import org.edupoll.model.dto.reply.ReplyResponseData;
-import org.edupoll.model.dto.moim.MoimPageData;
+import org.edupoll.model.dto.user.UserResponseData;
 import org.edupoll.model.entity.Attendance;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
@@ -23,11 +28,11 @@ import org.edupoll.repository.MoimRepository;
 import org.edupoll.repository.ReplyRepository;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MoimService {
@@ -50,21 +55,38 @@ public class MoimService {
 		moim.setManager(user);
 		Moim create = moimRepository.save(moim);
 		
-		Attendance at = new Attendance();
-		at.setMoim(moim);
-		at.setUser(user);
-		attendanceRepository.save(at);
+//		Attendance at = new Attendance();
+//		at.setMoim(moim);
+//		at.setUser(user);
+//		attendanceRepository.save(at);
 		
 		return true;
 	}
 	
 	// 모임 페이징처리해서 가져오기
-	public MoimPageResponseData findByMoimAll(int page) {
+	public MoimPageResponseData findByMoimAll(int page, String[] cate) {
 		Sort sort = Sort.by(Direction.ASC, "targetDate");
 		
-		List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 12, sort)).toList();
+		List<MoimListResponseData> moims = new ArrayList<>();
 		
-		int total = (int)moimRepository.count();
+		if(cate == null) {
+			List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 12, sort)).toList();
+			moims = list.stream().map(MoimListResponseData::new).toList();
+		}else {
+			List<Moim> list = moimRepository.findByCates(PageRequest.of(page-1, 12, sort), cate);
+			moims = list.stream().map(MoimListResponseData::new).toList();
+		}
+		
+		int total = 0;
+		if(cate == null) {
+			total = (int)moimRepository.count();
+			System.out.println("All size : "+ total +"/"+ moims.size());
+		}else {
+			List<String> list = Arrays.asList(cate);
+			for(String s : list) {
+				total += (int)moimRepository.countByCate(s);
+			}
+		}
 		int totalPage = total/12 + (total % 12 > 0 ? 1: 0);
 		int viewPage = 5;
 		int endPage = (((page-1)/viewPage)+1) * viewPage;
@@ -78,9 +100,9 @@ public class MoimService {
 		int idx = Math.round(startPage / viewPage)+1;
 		
 
-		List<MoimPageData> pages = new ArrayList<>();
+		List<PageData> pages = new ArrayList<>();
 		for(int i=startPage; i<=5*idx; i++) {
-			pages.add(new MoimPageData(String.valueOf(i), page == i));
+			pages.add(new PageData(String.valueOf(i), page == i));
 			if(i == totalPage) {
 				nextPage = i+1;
 				break;
@@ -94,8 +116,6 @@ public class MoimService {
 		{
 			existNext = false;
 		}
-		
-		List<MoimListResponseData> moims = list.stream().map(MoimListResponseData::new).toList();
 		
 		MoimPageResponseData moimsPage = new MoimPageResponseData
 				(pages, viewPage, nextPage, startPage, existPrev, existNext, moims);
@@ -113,6 +133,8 @@ public class MoimService {
 		
 		// 모임객체로 만든다
 		Moim moim = option.get();
+		
+		UserResponseData manager = new UserResponseData(userRepository.findById(moim.getManager().getId()).get());
 		
 		// 정렬 기준으로 페이징처리하여 댓글 리스트를 뽑는다
 		Sort sort = Sort.by(Direction.ASC ,"dates");
@@ -154,12 +176,23 @@ public class MoimService {
 		ReplyPageResponseData pageReplies = new ReplyPageResponseData
 				(replies, pages, viewPage, nextPage, startPage-1, existPrev, existNext);
 		
+		// 모임에 참가중인지?
 		boolean joined = attendanceRepository.existsByUserIdIsAndMoimIdIs(logonId, moimId);
+		// 내가 만든 모임인지?
 		boolean creator = moim.getManager().getId().equals(logonId);
-		System.out.println("작성자 : "+ moim.getManager().getId() + "/" + logonId +"/"+ creator);
+		// 모임 참가인원이 초과하였는지?
+		boolean ismaxPerson = moim.getCurrentPerson() >= moim.getMaxPerson();
+		
+		// 참가중인 인원 뽑기
+		List<Attendance> attendances = attendanceRepository.findByMoimIdIs(moimId);
+		List<AttendanceJoinResponseData> users = new ArrayList<>();
+		attendances.forEach(t -> {
+			AttendanceJoinResponseData ard = new AttendanceJoinResponseData(t.getUser());
+			users.add(ard);
+		});
 		
 		MoimDetailResponseData moimData = new MoimDetailResponseData
-				(moim, pageReplies, joined, creator);
+				(manager, moim, pageReplies, joined, creator, ismaxPerson, users);
 		
 		return moimData;
 	}
@@ -193,10 +226,29 @@ public class MoimService {
 	}
 	
 	// 모임 수정을 위한 모임정보 가져오기(댓글X 참가자X)
-	public MoimModifyResponseData modifyByMoim(String moimId) {
+	public MoimModifyResponseData findByMoim(String moimId) {
 		
 		Moim moim = moimRepository.findById(moimId).get();
 		
 		return new MoimModifyResponseData(moim);
+	}
+	
+	// 모임 수정 처리
+	@Transactional
+	public boolean updateMoim(MoimModifyRequestData data) {
+		
+		Moim moim = moimRepository.findById(data.getId()).orElse(null);
+		
+		moim.setTitle(data.getTitle());
+		moim.setCate(data.getCate());
+		moim.setDescription(data.getDescription());
+		moim.setMaxPerson(data.getMaxPerson());
+		moim.setDuration(LocalTime.parse(data.getDuration(), DateTimeFormatter.ISO_TIME));
+		moim.setTargetDate(LocalDateTime.parse(data.getTargetDate(), DateTimeFormatter.ISO_DATE_TIME));
+		
+		
+		moimRepository.save(moim);
+		
+		return true;
 	}
 }

@@ -15,7 +15,7 @@
       {{#SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
       <ul class="top_info">
         <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
-        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
       {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
       {{^SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
@@ -40,6 +40,22 @@
 
     <div class="all_group width common">
       <h2 class="title">전체 리스트</h2>
+	    <div class="all_group width">
+	      <form class="" action="/" method="get">
+	        <ul class="cate_wrap">
+	        {{#cates}}
+	        	{{#isCate}}
+ 	             <li><input type="checkbox" name="cate" id="{{cate}}" value="{{cate}}" checked="checked"><label for="{{cate}}">{{cate}}</label></li>
+	            {{/isCate}}
+	            {{^isCate}}
+	             <li><input type="checkbox" name="cate" id="{{cate}}" value="{{cate}}"><label for="{{cate}}">{{cate}}</label></li>
+	            {{/isCate}}
+	        {{/cates}}
+	          <li></li>
+	        </ul>
+	        <button type="submit">검색하기</button>
+	      </form>
+	   </div>
       <div class="agroup_wrap">
 	       {{#moims.moims}}
 	       <div class="ag_box">
@@ -49,119 +65,37 @@
 	         <h3><i class="ri-time-line"></i>모임시간<span>{{timeStart}} ~ {{timeEnd}}</span></h3>
 	         <ul>
 	           <li><p><i class="ri-user-3-line"></i>{{currentPerson}}명 / {{maxPerson}}명</p></li>
-	           <li><p>{{managerId}}</p></li>
+	           <li><p>{{nick}}</p></li>
 	         </ul>
 	       </div>
 	       {{/moims.moims}}
       </div>
 		
-      <div class="page_nav">
-      
-      	{{#moims.prev}}
-        <a href="/?page={{moims.prevPage}}"><</a>
-        {{/moims.prev}}
-      	{{^moims.prev}}
-        <a><</a>
-        {{/moims.prev}}
-        
-        {{#moims.pages}}
-        	{{#flag}}
-        	<a href="/?page={{page}}" class="pageActive">{{page}}</a>
-        	{{/flag}}
-        	{{^flag}}
-        	<a href="/?page={{page}}">{{page}}</a>
-        	{{/flag}}
-        {{/moims.pages}}
-        
-        {{#moims.next}}
-        <a href="/?page={{moims.nextPage}}">></a>
-      	{{/moims.next}}
-        {{^moims.next}}
-        <a>></a>
-      	{{/moims.next}}
+      	<div class="page_nav">
+	      	{{#moims.prev}}
+	        <a href="/?page={{moims.prevPage}}"><</a>
+	        {{/moims.prev}}
+	      	{{^moims.prev}}
+	        <a><</a>
+	        {{/moims.prev}}
+	        
+	        {{#moims.pages}}
+	        	{{#flag}}
+	        	<a class="pageActive">{{page}}</a>
+	        	{{/flag}}
+	        	{{^flag}}
+	        	<a href="/?page={{page}}{{#category}}{{.}}{{/category}}">{{page}}</a>
+	        	{{/flag}}
+	        {{/moims.pages}}
+	        
+	        {{#moims.next}}
+	        <a href="/?page={{moims.nextPage}}">></a>
+	      	{{/moims.next}}
+	        {{^moims.next}}
+	        <a>></a>
+	      	{{/moims.next}}
       </div>
     </div>
-
-    <div class="all_group width common">
-      <h2 class="title">카테고리</h2>
-      <form class="" action="index.html" method="post">
-        <ul class="cate_wrap">
-          <li><input type="checkbox" name="" value=""><label for="">1</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">2</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">3</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">4</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">5</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">6</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">7</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">8</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">9</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">10</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">11</label></li>
-          <li><input type="checkbox" name="" value=""><label for="">12</label></li>
-        </ul>
-      </form>
-      <div class="agroup_wrap">
-        <div class="ag_box">
-          <span class="category">카테고리</span>
-          <h2><a href="#">모임제목</a></h2>
-          <h3><i class="ri-calendar-line"></i>모임날짜<span>2023.07.11</span></h3>
-          <h3><i class="ri-time-line"></i>모임시간<span>8시~10시</span></h3>
-          <ul>
-            <li><p><i class="ri-user-3-line"></i>6명 / 8명</p></li>
-            <li><p>2023.07.11</p></li>
-          </ul>
-        </div>
-        <div class="ag_box">
-          <span class="category">카테고리</span>
-          <h2><a href="#">모임제목</a></h2>
-          <h3><i class="ri-calendar-line"></i>모임날짜<span>2023.07.11</span></h3>
-          <h3><i class="ri-time-line"></i>모임시간<span>8시~10시</span></h3>
-          <ul>
-            <li><p><i class="ri-user-3-line"></i>6명 / 8명</p></li>
-            <li><p>2023.07.11</p></li>
-          </ul>
-        </div>
-        <div class="ag_box">
-          <span class="category">카테고리</span>
-          <h2><a href="#">모임제목</a></h2>
-          <h3><i class="ri-calendar-line"></i>모임날짜<span>2023.07.11</span></h3>
-          <h3><i class="ri-time-line"></i>모임시간<span>8시~10시</span></h3>
-          <ul>
-            <li><p><i class="ri-user-3-line"></i>6명 / 8명</p></li>
-            <li><p>2023.07.11</p></li>
-          </ul>
-        </div>
-        <div class="ag_box">
-          <span class="category">카테고리</span>
-          <h2><a href="#">모임제목</a></h2>
-          <h3><i class="ri-calendar-line"></i>모임날짜<span>2023.07.11</span></h3>
-          <h3><i class="ri-time-line"></i>모임시간<span>8시~10시</span></h3>
-          <ul>
-            <li><p><i class="ri-user-3-line"></i>6명 / 8명</p></li>
-            <li><p>2023.07.11</p></li>
-          </ul>
-        </div>
-        <div class="ag_box">
-          <span class="category">카테고리</span>
-          <h2><a href="#">모임제목</a></h2>
-          <h3><i class="ri-calendar-line"></i>모임날짜<span>2023.07.11</span></h3>
-          <h3><i class="ri-time-line"></i>모임시간<span>8시~10시</span></h3>
-          <ul>
-            <li><p><i class="ri-user-3-line"></i>6명 / 8명</p></li>
-            <li><p>2023.07.11</p></li>
-          </ul>
-        </div>
-      </div>
-      <div class="page_nav">
-        <a href="#"><</a>
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">></a>
-      </div>
-    </div>
-
 
     <div class="open_wrap common">
       <div class="width">

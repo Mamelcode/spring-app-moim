@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://webfontworld.github.io/cookierun/CookieRun.css" rel="stylesheet">
+    <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/initial.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">Group Talk</a>
+      <ul class="top_info">
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
+      </ul>
+    </nav>
+
+
+    <div class="sub_visual">
+      <div class="width2">
+        <h2>MY PAGE</h2>
+        <img src="/image/sub.png" alt="">
+      </div>
+    </div>
+
+    <ul class="set_nav">
+      <li><a href="/mypage/detail">프로필 설정</a></li>
+      <li><a href="/mypage/attendance">모임참여 목록</a></li>
+      <li><a href="/mypage/creator">모임개설 목록</a></li>
+      <li><a href="/mypage/reply" class="mypage_active">댓글 목록</a></li>
+    </ul>
+
+    <div class="common width2">
+      <h2 class="title">참여 목록</h2>
+      <table class="my_party">
+        <thead>
+          <th>모임 명</th>
+          <th>주최자</th>
+          <th>모임날짜</th>
+          <th>모임시간</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="">운동</a></td>
+            <td><a href="">홍길동</a></td>
+            <td>2023.07.11</td>
+            <td>8시~10시</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="page_nav">
+        <a href="#"><</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">></a>
+      </div>
+    </div>
+
+  </body>
+</html>

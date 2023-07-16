@@ -2,11 +2,13 @@ package org.edupoll.model.dto.moim;
 
 import java.util.List;
 
+import org.edupoll.model.dto.etc.PageData;
+
 public class MoimPageResponseData {
 	
 	List<MoimListResponseData> moims;
 	
-	List<MoimPageData> pages; // 페이지 몇개까지 보이게 할건지?
+	List<PageData> pages; // 페이지 몇개까지 보이게 할건지?
 	
 	int viewPage; // 글 토탈 갯수
 			
@@ -20,7 +22,7 @@ public class MoimPageResponseData {
 		super();
 	}
 
-	public MoimPageResponseData(List<MoimPageData> pages, int viewPage, int nextPage, int prevPage, 
+	public MoimPageResponseData(List<PageData> pages, int viewPage, int nextPage, int prevPage, 
 			boolean prev, boolean next, List<MoimListResponseData> moims) {
 		super();
 		this.pages = pages;
@@ -38,10 +40,10 @@ public class MoimPageResponseData {
 	public void setMoims(List<MoimListResponseData> datas) {
 		this.moims = datas;
 	}
-	public List<MoimPageData> getPages() {
+	public List<PageData> getPages() {
 		return pages;
 	}
-	public void setPages(List<MoimPageData> pages) {
+	public void setPages(List<PageData> pages) {
 		this.pages = pages;
 	}
 	public int getNextPage() {

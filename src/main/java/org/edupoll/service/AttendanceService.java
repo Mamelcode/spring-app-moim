@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.edupoll.model.dto.moim.AttendanceJoinResponseData;
-import org.edupoll.model.dto.moim.AttendanceRequestData;
+import org.edupoll.model.dto.attendance.AttendanceJoinResponseData;
+import org.edupoll.model.dto.attendance.AttendanceRequestData;
 import org.edupoll.model.entity.Attendance;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.User;
@@ -13,11 +13,9 @@ import org.edupoll.repository.AttendanceRepository;
 import org.edupoll.repository.MoimRepository;
 import org.edupoll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class AttendanceService {
@@ -34,74 +32,48 @@ public class AttendanceService {
 	
 	// 모임 참가 신청
 	@Transactional
-	public AttendanceJoinResponseData createAttendance(AttendanceRequestData attendanceData) {
-		AttendanceJoinResponseData data = new AttendanceJoinResponseData();
+	public int createAttendance(String moimId, String userId) {
 		
-		Optional<User> user = userRepository.findById(attendanceData.getUserId());
-		Optional<Moim> moim = moimRepository.findById(attendanceData.getMoimId()); 
+		Optional<User> user = userRepository.findById(userId);
+		Optional<Moim> moim = moimRepository.findById(moimId); 
 		
-		if(user.isEmpty() || moim.isEmpty()) {
-			data.setResult(false);
-			data.setErrorMessage("유효하지 않은 정보가 전송되었습니다.");
-			return data;
-		}
+		// 이미 참가중 실패!
 		if(attendanceRepository.existsByUserIdIsAndMoimIdIs
-				(attendanceData.getUserId(), attendanceData.getMoimId())) {
-			data.setResult(false);
-			data.setErrorMessage("이미 참가중인 모임 입니다.");
-			return data;
+				(userId, moimId)) {
+			return 1;
 		}
 		
+		// 정원초과 실패!
 		if(moim.get().getCurrentPerson() >= moim.get().getMaxPerson()) {
-			data.setResult(false);
-			data.setErrorMessage("최대 허용 인원을 초과하였습니다.");
-			return data;
+			return 2;
 		}
+		
+		// 참가신청 save
 		Attendance attendance = new Attendance(moim.get(), user.get());
 		attendanceRepository.save(attendance);
 		
+		// 참가인원 +1
 		moim.get().setCurrentPerson(moim.get().getCurrentPerson()+1);
 		moimRepository.save(moim.get());
-		
-		data.setResult(true);
-		data.setCurrentPerson(moim.get().getCurrentPerson());
-		List<String> list = new ArrayList<>();
-		for(Attendance a : attendanceRepository.findByMoimIdIs(attendanceData.getMoimId())) {
-			list.add(a.getUser().getId());
-		}
-		data.setAttendUserIds(list);
-		
-		/*
-		attendanceRepository.findByMoimIdIs(
-				attendanceData.getMoimId()).stream().map(e -> e.getUser().getId()
-		).toList();
-		*/
-		
-		return data;
+						
+		return 0;
 	}
 	
 	// 모임 참가 삭제
 	@Transactional
-	public AttendanceJoinResponseData deleteAttendance(AttendanceRequestData reqData) {
-		AttendanceJoinResponseData respData = new AttendanceJoinResponseData();
-		
-		
-		attendanceRepository.removeByUserIdIsAndMoimIdIs(reqData.getUserId(), reqData.getMoimId());
-		
-		Optional<Moim> moim = moimRepository.findById(reqData.getMoimId()); 
-		
-		moim.get().setCurrentPerson(moim.get().getCurrentPerson()-1);
-		moimRepository.save(moim.get());
-		
-		respData.setResult(true);
-		respData.setCurrentPerson(moim.get().getCurrentPerson());
-		List<String> list = new ArrayList<>();
-		for(Attendance a : attendanceRepository.findByMoimIdIs(reqData.getMoimId())) {
-			list.add(a.getUser().getId());
+	public boolean deleteAttendance(String moimId, String userId) {
+		Optional<Moim> moim = moimRepository.findById(moimId);
+		if(moim.isEmpty()) {
+			return false;
 		}
-		respData.setAttendUserIds(list);
 		
-		return respData;
+		// 참가취소
+		attendanceRepository.removeByUserIdIsAndMoimIdIs(userId, moimId);
+		
+		// 모임 참가자 -1
+		moim.get().setCurrentPerson(moim.get().getCurrentPerson()-1);
+				
+		return true;
 	}
 	
 	// 특정 유저가 모임에 참여 중인지?

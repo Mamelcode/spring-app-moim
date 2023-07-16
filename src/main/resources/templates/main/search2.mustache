@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>우리들의 모임</title>
+<style type="text/css">
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2RkZGRkZCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2NjY2NjYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dddddd), color-stop(100%, #cccccc));
+  background-image: -moz-linear-gradient(#dddddd, #cccccc);
+  background-image: -webkit-linear-gradient(#dddddd, #cccccc);
+  background-image: linear-gradient(#dddddd, #cccccc);
+}
+
+#people {
+  position: relative;
+  margin: 80px auto;
+  padding: 0;
+  width: 480px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: #3b3b3b;
+  -webkit-font-smoothing: antialiased;
+  list-style-type: none;
+}
+#people li {
+  position: relative;
+  margin: 0 0 40px 0;
+  padding: 10px 8px 8px 54px;
+  height: 42px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 1px 0 #ffffff;
+  background: #f6f6f6;
+}
+#people li img {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  z-index: 10;
+  margin: 0;
+  padding: 4px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #bbbbbb;
+  box-shadow: 0 1px 0 #ffffff;
+  border-radius: 50%;
+  background: #ffffff;
+}
+#people li h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  color: #4b4b4b;
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.7);
+}
+#people li .info {
+  margin: 0;
+  display: block;
+}
+#people li .info em {
+  margin: 0 18px 0 0;
+  font-size: 11px;
+  line-height: 20px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #5b5b5b;
+ }
+  
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 3px solid #000000;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: #000000;
+}
+
+.searchButton {
+  width: 80px;
+  height: 36px;
+  border: 1px solid #000000;
+  background: #000000;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.wrap{
+  width: 40%;
+  margin: 0 auto;
+}
+
+
+
+.mod-pageing ul {
+  font-size: 0;
+  letter-spacing: 0;
+  text-align: center;
+}
+.mod-pageing ul li {
+  display: inline-block;
+  font-size: 1rem;
+  font-size: 14px;
+}
+
+.mod-pageing ul li a {
+  display: block;
+  margin-right: 0.5em;
+  background: #aaa;
+  color: #fff;
+  border: #333;
+  border-radius: 4px;
+  text-decoration: none;
+  padding: 0.6em 0.8em;
+  line-height: 1;
+}
+
+.mod-pageing ul li a:hover {
+  background: #000;
+}
+
+.mod-pageing ul li a.is-active {
+  background: #000;
+}
+
+.bi-heart-fill {
+	color: red;
+}
+
+.bi-heart-fill:hover {
+	cursor: pointer;
+}
+
+.bi-heart:hover {
+	cursor: pointer;
+}
+
+</style>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+<body>
+	<div class="wrap">
+		<form action="/main/search">
+			<div class="search">
+				<input type="text" class="searchTerm"
+					placeholder="Search...." name="q">
+				<button type="submit" class="searchButton">
+					<span style="font-size: 12px;">검색</span>
+				</button>
+			</div>
+		</form>
+	</div>
+	<ul id="people">
+	{{#searchDatas}}
+	  <li>
+	  	{{#avatarURL}}
+	    <a href=""><img src="{{avatarURL}}" /> </a>
+	    {{/avatarURL}}
+	    {{^avatarURL}}
+	    <a href=""><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" /> </a>
+	    {{/avatarURL}}
+	    <h2>{{#nick}}{{nick}}{{/nick}}<small style="font-size: 13px;">(@{{#id}}{{id}}{{/id}}) 
+	    {{#joinDate}} - {{joinDate}}{{/joinDate}}</small>
+	    <!--  
+	    {{#followed }}
+	    <a id="target{{id}}" class="follow bi-heart-fill" style="text-decoration: none;"
+	    data-user-id="{{id}}" data-status="follow">♥</a></h2>
+	    {{/followed }}
+	    {{^followed }}
+	    <a id="target{{id}}" class="follow bi-heart" style="text-decoration: none;"
+	    data-user-id="{{id}}" data-status="not-follow">♡</a></h2>
+	    {{/followed }}
+	    -->
+   		{{#followed }}
+		<i class="follow bi bi-heart-fill text-danger" data-user-id="{{id}}"
+			data-status="follow"></i>
+		{{/followed }}
+		{{^followed }}
+		<i class="follow bi bi-heart text-danger" data-user-id="{{id}}"
+			data-status="not-follow"></i>
+		{{/followed }}
+	    <span class="info">
+	   		<em>{{#description}}{{description}}{{/description}}</em>
+	    </span>
+	  </li>
+	  {{/searchDatas}}
+	  {{^searchDatas}}
+	  	<h2 style="color: black; text-align: center;">검색결과가 없습니다</h2>
+	  {{/searchDatas}}
+	</ul>
+
+	<div class="mod-pageing">
+		<ul>
+			{{#pages}}
+			<li><a href="/main/search?q={{q}}&page={{.}}">{{.}}</a></li>
+			{{/pages}}
+		</ul>
+	</div>
+<script>
+	document.querySelectorAll(".follow").forEach( elm => {
+		elm.onclick = (evt)=> {
+			// window.alert(evt.target.dataset.userId);
+			if(elm.dataset.status==="not-follow") {
+				const xhr = new XMLHttpRequest();
+				xhr.open("post","/api/follow", false);
+				// post는 body가 있는 요청. body에 담긴 내용의 종류를 설정해야 됨.
+				xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+				xhr.send("target=" +evt.target.dataset.userId );	// post는 send안에 body 설정을 해야 함.
+				const response = JSON.parse(xhr.responseText);
+				if(response.result) {
+					//document.querySelector(".follow").innerHTML = "♥";
+					evt.target.classList.remove("bi-heart");
+					evt.target.classList.add("bi-heart-fill");
+					evt.target.dataset.status="follow";
+				}
+			}else {
+				const xhr = new XMLHttpRequest();
+				xhr.open("delete","/api/follow?target="+evt.target.dataset.userId, false);
+				xhr.send();
+				const response = JSON.parse(xhr.responseText);
+				if(response.result) {
+					//document.querySelector(".follow").innerHTML = "♡";
+					evt.target.classList.remove("bi-heart-fill");
+					evt.target.classList.add("bi-heart");
+					evt.target.dataset.status="not-follow";
+				}
+			}
+		};
+	});
+	
+</script>
+</body>
+</html>

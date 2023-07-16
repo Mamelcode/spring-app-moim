@@ -16,7 +16,7 @@
       <a href="/" class="logo">Group Talk</a>
       <ul class="top_info">
         <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
-        <li class="setting"><a href="/user/detail">설정</a><a href="/logout">로그아웃</a></li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
       </ul>
     </nav>
 
@@ -37,10 +37,12 @@
         {{/moim.isCreator}}
         {{^moim.isCreator}}
 	        {{#moim.isJoined}}
-	          <a class="meet_close" href="#"><i class="ri-close-line"></i> 참가취소</a>
+	          <a class="meet_close" href="/moim/cancle?moimId={{moim.id}}"><i class="ri-close-line"></i> 참가취소</a>
 	        {{/moim.isJoined}}
 	        {{^moim.isJoined}}
-	          <a class="meet_check" href="#"><i class="ri-check-line"></i> 참가신청</a>
+	          {{^moim.ismaxPerson}}
+	          <a class="meet_check" href="/moim/attendance?moimId={{moim.id}}"><i class="ri-check-line"></i> 참가신청</a>
+	          {{/moim.ismaxPerson}}
 	        {{/moim.isJoined}}
         {{/moim.isCreator}}
         </span>
@@ -58,14 +60,18 @@
       <div class="avatar_wrap">
         <h2>참가자 {{moim.currentPerson}}/{{moim.maxPerson}}</h2>
         <ul>
-          <li>
-            <span></span>
-            <p>이름</p>
+        {{#moim.manager}}
+           <li>
+            <span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span>
+            <p>{{nick}}</p>
           </li>
+        {{/moim.manager}}
+        {{#moim.attendace}}
           <li>
-            <span></span>
-            <p>이름</p>
+            <span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span>
+            <p>{{nick}}</p>
           </li>
+        {{/moim.attendace}}
         </ul>
       </div>
 

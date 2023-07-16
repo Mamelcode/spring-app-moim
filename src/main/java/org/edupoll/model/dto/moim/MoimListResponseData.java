@@ -8,6 +8,8 @@ public class MoimListResponseData {
 	String id;
 	String managerId;
 	
+	String nick;
+	
 	String title;
 	String cate;
 	String description;
@@ -20,8 +22,26 @@ public class MoimListResponseData {
 	String timeStart;
 	String timeEnd;
 	
+	boolean isCate;
+	
 	// 모임 리스트 찍는 생성자
 	public MoimListResponseData(Moim moim) {
+		super();
+		this.id = moim.getId();
+		this.nick = moim.getManager().getNick();
+		this.managerId = moim.getManager().getId();
+		this.title = moim.getTitle();
+		this.cate = moim.getCate();
+		this.description = moim.getDescription();
+		this.maxPerson = moim.getMaxPerson();
+		this.currentPerson = moim.getCurrentPerson();		
+		this.formatDate = moim.getTargetDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.timeStart = moim.getTargetDate().format(DateTimeFormatter.ofPattern("HH:mm")); 
+		this.timeEnd = moim.getDuration().format(DateTimeFormatter.ofPattern("HH:mm"));
+	}
+	
+	// 모임 리스트 + 카테 검색 유무
+	public MoimListResponseData(Moim moim, boolean isCate) {
 		super();
 		this.id = moim.getId();
 		this.managerId = moim.getManager().getId();
@@ -33,6 +53,7 @@ public class MoimListResponseData {
 		this.formatDate = moim.getTargetDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		this.timeStart = moim.getTargetDate().format(DateTimeFormatter.ofPattern("HH:mm")); 
 		this.timeEnd = moim.getDuration().format(DateTimeFormatter.ofPattern("HH:mm"));
+		this.isCate = isCate;
 	}
 	
 	public String getId() {
@@ -95,4 +116,11 @@ public class MoimListResponseData {
 	public void setTimeEnd(String timeEnd) {
 		this.timeEnd = timeEnd;
 	}
+	public boolean isCate() {
+		return isCate;
+	}
+	public void setCate(boolean isCate) {
+		this.isCate = isCate;
+	}
+	
 }
