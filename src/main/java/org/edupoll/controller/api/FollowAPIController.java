@@ -16,14 +16,14 @@ public class FollowAPIController {
 
 	@Autowired FollowService followService;
 	
-	@PostMapping("/api/follow")
+	@PostMapping("/follow")
 	public FollowResponseData followPostHandle(@AuthenticationPrincipal Account account, 
 			@RequestParam String target) {
 		
 		return followService.createFollow(account.getUsername(), target);
 	}
 	
-	@DeleteMapping("/api/follow")
+	@DeleteMapping("/follow")
 	public FollowResponseData followDeleteHandle(@AuthenticationPrincipal Account account, 
 			@RequestParam String target) {
 		

@@ -11,4 +11,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer>{
 	List<Reply> findByMoimId(String moimId);
 	
 	long countByMoimId(String moimId);
+	
+	List<Reply> findByUserId(PageRequest page, String userId);
+	long countByUserId(String userId);
 }

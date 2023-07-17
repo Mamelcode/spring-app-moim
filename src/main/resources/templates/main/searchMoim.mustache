@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://webfontworld.github.io/cookierun/CookieRun.css" rel="stylesheet">
+    <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/initial.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">Group Talk</a>
+      {{#SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      <ul class="top_info">
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
+      </ul>
+      {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      {{^SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      <ul class="top_info">
+        <li class="setting"><a href="/login">로그인</a><a href="/join">회원가입</a></li>
+      </ul>
+      {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+    </nav>
+
+    <div class="visual">
+      <div class="width">
+        <form class="" action="/serach/moim" method="get">
+          <h2>MOIM <br>Search</h2>
+          <div class="search_bar">
+            <input type="text" name="query" value="{{#query}}{{.}}{{/query}}" placeholder="모임,유저 검색...">
+            <button type="submit"><i class="ri-search-2-line"></i></button>
+          </div>
+        </form>
+        <img src="/image/visual.png" alt="">
+      </div>
+    </div>
+
+    <div class="all_group width common">
+      <h2 class="title">{{#query}}<b style="color: blue;">"{{.}}"</b>{{/query}} 검색 결과</h2>
+
+      <div class="tab">
+        <ul class="tabnav">
+          <li><a class="active">모임 <span>{{#data.moimCnt}}{{.}}{{/data.moimCnt}}{{^data.moimCnt}}0{{/data.moimCnt}}건</span></a></li>
+          <li><a href="/serach/user{{#query}}?query={{.}}{{/query}}">유저 <span>{{#data.userCnt}}{{.}}{{/data.userCnt}}{{^data.userCnt}}0{{/data.userCnt}}건</span></a></li>
+        </ul>
+        
+        <div class="tabcontent">
+        
+          <div id="tab01">
+            <div class="agroup_wrap">
+            
+            <!-- 검색 리스트 구간 -->
+            {{#data.moims}}
+              <div class="ag_box">
+                <span class="category">{{cate}}</span>
+                <h2><a href="/moim/view?moimId={{id}}">{{title}}</a></h2>
+                <h3><i class="ri-calendar-line"></i>모임날짜<span>{{formatDate}}</span></h3>
+                <h3><i class="ri-time-line"></i>모임시간<span>{{timeStart}} ~ {{timeEnd}}</span></h3>
+                <ul>
+                  <li><p><i class="ri-user-3-line"></i>{{currentPerson}}명 / {{maxPerson}}명</p></li>
+                  <li><p>{{nick}}</p></li>
+                </ul>
+              </div>
+            {{/data.moims}}
+            {{^data.moims}}
+            <span class="search_result">모임 검색 결과가 없습니다.</span>
+            {{/data.moims}}
+            
+          </div>
+          
+          <!-- 페이징 처리 구간 -->
+	      <div class="page_nav">
+	       {{#data.prev}}
+	        <a href="/serach/moim?query={{query}}&page={{data.prevPage}}"><</a>
+	       {{/data.prev}}
+	       {{^data.prev}}
+	        <a><</a>
+	       {{/data.prev}}
+	        
+	        
+	      {{#data.pages}}
+	      	{{#flag}}
+	        <a class="pageActive">{{page}}</a>
+	        {{/flag}}
+	        {{^flag}}
+	        <a href="/serach/moim?query={{query}}&page={{page}}">{{page}}</a>
+	        {{/flag}}
+	      {{/data.pages}}
+	      
+	      
+		  {{#data.next}}
+		  <a href="/serach/moim?query={{query}}&page={{data.nextPage}}">></a>
+		  {{/data.next}}
+		  {{^data.next}}
+		  <a>></a>
+		  {{/data.next}}
+	     </div>
+        </div>
+      </div>
+    </div>
+	</div>
+
+
+    <div class="open_wrap common">
+      <div class="width">
+        <h2 class="title">찾는 모임이 없으시다면?</h2>
+        <a href="/moim/create">모임 개설하기</a>
+      </div>
+    </div>
+  </body>
+</html>

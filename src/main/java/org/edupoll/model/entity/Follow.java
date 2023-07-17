@@ -1,5 +1,6 @@
 package org.edupoll.model.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ public class Follow {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
 	
-	Date created;
+	LocalDate created;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ownerId")
@@ -43,11 +44,11 @@ public class Follow {
 		this.id = id;
 	}
 
-	public Date getCreated() {
+	public LocalDate getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(LocalDate created) {
 		this.created = created;
 	}
 
@@ -71,6 +72,6 @@ public class Follow {
 	@PrePersist
 	public void doPrepersist() {
 		System.out.println("doPrepersist");
-		created = new Date();
+		this.created = LocalDate.now();
 	}
 }

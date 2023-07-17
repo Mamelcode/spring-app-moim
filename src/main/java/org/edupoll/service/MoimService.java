@@ -80,7 +80,6 @@ public class MoimService {
 		int total = 0;
 		if(cate == null) {
 			total = (int)moimRepository.count();
-			System.out.println("All size : "+ total +"/"+ moims.size());
 		}else {
 			List<String> list = Arrays.asList(cate);
 			for(String s : list) {
@@ -103,7 +102,7 @@ public class MoimService {
 		List<PageData> pages = new ArrayList<>();
 		for(int i=startPage; i<=5*idx; i++) {
 			pages.add(new PageData(String.valueOf(i), page == i));
-			if(i == totalPage) {
+			if(i >= totalPage) {
 				nextPage = i+1;
 				break;
 			}
@@ -158,7 +157,7 @@ public class MoimService {
 		List<ReplyPageData> pages = new ArrayList<>();
 		for(int i=startPage; i<=5*idx; i++) {
 			pages.add(new ReplyPageData(String.valueOf(i), page == i));
-			if(i == totalPage) {
+			if(i >= totalPage) {
 				nextPage = i+1;
 				break;
 			}

@@ -36,6 +36,7 @@
 
     <div class="common width2">
       <h2 class="title">참여 목록</h2>
+      {{#data}}
       <table class="my_party">
         <thead>
           <th>모임 명</th>
@@ -54,7 +55,13 @@
         {{/data.attendances}}
         </tbody>
       </table>
+      {{/data}}
+      
+      {{^data}}
+      <h3>참여중인 모임이 없습니다.</h3>
+      {{/data}}
 		
+	  {{#data}}
       <div class="page_nav">
        {{#data.prev}}
         <a href="/mypage/attendance?page={{data.prevPage}}"><</a>
@@ -81,6 +88,7 @@
 	  <a>></a>
 	  {{/data.next}}
      </div>
+     {{/data}}
     </div>
 
   </body>

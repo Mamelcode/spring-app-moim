@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://webfontworld.github.io/cookierun/CookieRun.css" rel="stylesheet">
+    <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/initial.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">Group Talk</a>
+      {{#SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      <ul class="top_info">
+        <li class="profile"><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span> <b>{{SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}</b>님</li>
+        <li class="setting"><a href="/mypage/detail">설정</a><a href="/logout">로그아웃</a></li>
+      </ul>
+      {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      {{^SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+      <ul class="top_info">
+        <li class="setting"><a href="/login">로그인</a><a href="/join">회원가입</a></li>
+      </ul>
+      {{/SPRING_SECURITY_CONTEXT.Authentication.Principal.nick}}
+    </nav>
+
+    <div class="visual">
+      <div class="width">
+        <form class="" action="/serach/moim" method="get">
+          <h2>USER <br>Search</h2>
+          <div class="search_bar">
+            <input type="text" name="query" value="{{#query}}{{.}}{{/query}}" placeholder="모임,유저 검색...">
+            <button type="submit"><i class="ri-search-2-line"></i></button>
+          </div>
+        </form>
+        <img src="/image/visual.png" alt="">
+      </div>
+    </div>
+
+    <div class="all_group width common">
+      <h2 class="title">{{#query}}<b style="color: blue;">"{{.}}"</b>{{/query}} 검색 결과</h2>
+
+      <div class="tab">
+        <ul class="tabnav">
+          <li><a href="/serach/moim{{#query}}?query={{.}}{{/query}}">모임 <span>{{#data.moimCnt}}{{.}}{{/data.moimCnt}}{{^data.moimCnt}}0{{/data.moimCnt}}건</span></a></li>
+          <li><a class="active">유저 <span>{{#data.userCnt}}{{.}}{{/data.userCnt}}{{^data.userCnt}}0{{/data.userCnt}}건</span></a></li>
+        </ul>
+        
+        <div class="tabcontent">
+
+          <div id="tab02">
+            <div class="avatar_wrap">
+              <ul>
+              	
+              	{{#data.users}}
+	                <li>
+	                  <span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}" alt=""></span>
+	                  {{#me}}
+	                  	  <h2>(사용자){{userNick}}<br/>(@{{userId}})</h2>
+	                  {{/me}}
+	                  {{^me}}
+	                  	  <h2>{{userNick}}<br/>(@{{userId}})</h2>
+		                  {{#followed}}
+		                  <a class="unfollow followed" id="{{userId}}" data-user-id="{{userId}}" data-status="follow">팔로우취소</a>
+		                  {{/followed}}
+		                  {{^followed}}
+		                  <a class="follow followed" id="{{userId}}" data-user-id="{{userId}}" data-status="not-follow">팔로우하기</a>
+		                  {{/followed}}
+	                  {{/me}}
+	                </li>
+                {{/data.users}}
+                {{^data.users}}
+                <span class="search_result">유저 검색 결과가 없습니다.</span>
+                {{/data.users}}
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+	      <!-- 페이징 처리 구간 -->
+	      <div class="page_nav">
+	       {{#data.prev}}
+	        <a href="/serach/user?query={{query}}&page={{data.prevPage}}"><</a>
+	       {{/data.prev}}
+	       {{^data.prev}}
+	        <a><</a>
+	       {{/data.prev}}
+	        
+	        
+	      {{#data.pages}}
+	      	{{#flag}}
+	        <a class="pageActive">{{page}}</a>
+	        {{/flag}}
+	        {{^flag}}
+	        <a href="/serach/user?query={{query}}&page={{page}}">{{page}}</a>
+	        {{/flag}}
+	      {{/data.pages}}
+	      
+	      
+		  {{#data.next}}
+		  <a href="/serach/user?query={{query}}&page={{data.nextPage}}">></a>
+		  {{/data.next}}
+		  {{^data.next}}
+		  <a>></a>
+		  {{/data.next}}
+	     </div>
+	     
+      </div>
+    </div>
+    
+    
+	<script type="text/javascript">
+		document.querySelectorAll(".followed").forEach( elm => {
+			elm.onclick = (evt)=> {
+				if(elm.dataset.status==="not-follow") {
+					const xhr = new XMLHttpRequest();
+					xhr.open("post","/follow", false);
+					xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+					xhr.send("target=" +evt.target.dataset.userId );
+					const response = JSON.parse(xhr.responseText);
+					if(response.result) {
+						document.querySelector("#"+evt.target.dataset.userId).innerHTML = "팔로우취소";
+						evt.target.classList.remove("follow");
+						evt.target.classList.add("unfollow");
+						evt.target.dataset.status="follow";
+					}
+				}else {
+					const xhr = new XMLHttpRequest();
+					xhr.open("delete","/follow?target="+evt.target.dataset.userId, false);
+					xhr.send();
+					const response = JSON.parse(xhr.responseText);
+					if(response.result) {
+						document.querySelector("#"+evt.target.dataset.userId).innerHTML = "팔로우하기";
+						evt.target.classList.remove("unfollow");
+						evt.target.classList.add("follow");
+						evt.target.dataset.status="not-follow";
+					}
+				}
+			};
+		});
+	</script>
+  </body>
+</html>

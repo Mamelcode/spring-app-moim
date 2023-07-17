@@ -44,7 +44,13 @@ public class MyPageController {
 	
 	// 댓글목록 뷰
 	@GetMapping("/reply")
-	public String replyViewHandle() {
+	public String replyViewHandle(@RequestParam(defaultValue = "1") int page, 
+			@AuthenticationPrincipal Account account, Model model) {
+		
+		MyPageResponseData datas = myPageService.getMyReply(account.getUsername(), page);
+		
+		model.addAttribute("data", datas);
+		
 		return "mypage/myReply";
 	}
 	
