@@ -52,6 +52,12 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	List<Reply> replies;
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<ChatMessage> messages;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<ChatJoin> joins;
+	
 	public User() {
 		super();
 	}
@@ -151,6 +157,22 @@ public class User {
 
 	public void setReplies(List<Reply> replies) {
 		this.replies = replies;
+	}
+	
+	public List<ChatMessage> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<ChatMessage> messages) {
+		this.messages = messages;
+	}
+
+	public List<ChatJoin> getJoins() {
+		return joins;
+	}
+
+	public void setJoins(List<ChatJoin> joins) {
+		this.joins = joins;
 	}
 
 	// 객체 insert 전 할 작업

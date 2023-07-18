@@ -40,3 +40,15 @@ document.querySelectorAll(".followed").forEach( elm => {
 		}
 	};
 });
+
+document.querySelectorAll(".replies").forEach( elm => {
+	elm.onclick = (evt)=> {
+		const xhr = new XMLHttpRequest();
+		xhr.open("delete","/reply?replyId="+evt.target.dataset.replyId, false);
+		xhr.send();
+		const response = JSON.parse(xhr.responseText);
+		if(response.result) {
+			document.querySelector("."+evt.target.dataset.replyId).style.disply='none';
+		}
+	};
+});

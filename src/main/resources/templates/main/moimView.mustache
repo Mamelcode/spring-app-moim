@@ -79,14 +79,14 @@
         <h2 class="title">댓글</h2>
         
         {{#moim.pageReply.replies}}
-        <div class="comment_box">
+        <div class="comment_box" id="reply_{{id}}">
           <ul>
             <li>
               <div class="comment_info">
                 <h3><span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}"></span>{{writer}}</h3>
                 <h3><i class="ri-calendar-line"></i>{{dates}}</h3>
               </div>
-            <li class="com_edit"><a href="#"><i class="ri-edit-line"></i></a><a href="#"><i class="ri-delete-bin-line"></i></a></li>
+            <li class="com_edit"><a><i class="ri-edit-line"></i></a><a><i class="ri-delete-bin-line replies" data-id="{{id}}"></i></a></li>
           </ul>
           <p>{{text}}</p>
         </div>
@@ -167,5 +167,21 @@
 	};
 </script>
 {{/flag}}
+<script type="text/javascript">
+	document.querySelectorAll(".replies").forEach( elm => {
+		elm.onclick = (evt)=> {
+			const xhr = new XMLHttpRequest();
+			xhr.open("delete","/reply?replyId="+evt.target.dataset.id, false);
+			xhr.send();
+			const response = JSON.parse(xhr.responseText);
+			if(response.result) {
+				document.querySelector("#reply_"+evt.target.dataset.id).style.display='none';
+			}else {
+				window.alert("잘못된 요청입니다.");
+			}
+		};
+	});
+</script>
+
 </body>
 </html>

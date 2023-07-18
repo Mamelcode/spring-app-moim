@@ -15,7 +15,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(t-> t
 				.requestMatchers("/", "/login", "/login-task", "/join", "/join-task").permitAll()
 				.requestMatchers("/css/**", "/image/**").permitAll()
-				.requestMatchers("/moim/**", "/user/**", "/main/**").hasAnyRole("NORMAL", "VIP")
+				.requestMatchers("/moim/**", "/user/**", "/main/**", "/chat/**").hasAnyRole("NORMAL", "VIP")
 				.anyRequest().authenticated()
 		);
 		

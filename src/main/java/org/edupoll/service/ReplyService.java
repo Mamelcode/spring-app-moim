@@ -1,8 +1,11 @@
 package org.edupoll.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.edupoll.model.dto.reply.ReplyAPIResponseData;
 import org.edupoll.model.dto.reply.ReplyCreateRequestData;
+import org.edupoll.model.dto.reply.ReplyResponseData;
 import org.edupoll.model.entity.Moim;
 import org.edupoll.model.entity.Reply;
 import org.edupoll.model.entity.User;
@@ -28,7 +31,7 @@ public class ReplyService {
 	@Autowired
 	UserRepository userRepository;
 	
-	//댓글쓰기
+	// 댓글쓰기
 	@Transactional
 	public boolean crateReply(ReplyCreateRequestData data, String userId) {
 		
@@ -40,6 +43,8 @@ public class ReplyService {
 		return true;
 	}
 	
+	// 특정모임 댓글들 가져오기
+	@Transactional(readOnly = true)
 	public List<Reply> findByReplys(String moimId, int page) {
 		Sort sort = Sort.by(Direction.ASC ,"id");
 		List<Reply> list = 
@@ -47,6 +52,21 @@ public class ReplyService {
 		
 		return list;
 	}
+	
+	// 댓글삭제
+	@Transactional
+	public ReplyAPIResponseData deleteReply(Integer replyId) {
+		
+		Optional<Reply> option = replyRepository.findById(replyId);
+		if(option.isEmpty()) {
+			return new ReplyAPIResponseData(false);
+		}
+		
+		replyRepository.delete(option.get());
+		
+		return new ReplyAPIResponseData(true);
+	}
+	
 	
 	public long findByReplysCount(String moimId) {
 		List<Reply> list = 
