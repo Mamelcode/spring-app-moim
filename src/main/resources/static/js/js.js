@@ -28,3 +28,15 @@ document.querySelectorAll(".followed").forEach( elm => {
 		}
 	};
 });
+
+document.querySelectorAll(".followed").forEach( elm => {
+	elm.onclick = (evt)=> {
+		const xhr = new XMLHttpRequest();
+		xhr.open("delete","/follow?target="+evt.target.dataset.userId, false);
+		xhr.send();
+		const response = JSON.parse(xhr.responseText);
+		if(response.result) {
+			evt.target.classList
+		}
+	};
+});

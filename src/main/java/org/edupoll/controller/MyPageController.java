@@ -54,5 +54,17 @@ public class MyPageController {
 		return "mypage/myReply";
 	}
 	
+	// 팔로우 목록 뷰
+	@GetMapping("/follow")
+	public String followViewHandle(@RequestParam(defaultValue = "1") int page, 
+			@AuthenticationPrincipal Account account, Model model) {
+		
+		MyPageResponseData datas = myPageService.getMyFollow(account.getUsername(), page);
+				
+		model.addAttribute("data", datas);
+		
+		return "mypage/myFollow";
+	}
+	
 	
 }

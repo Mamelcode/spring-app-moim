@@ -30,45 +30,39 @@
     <ul class="set_nav">
       <li><a href="/mypage/detail">프로필 설정</a></li>
       <li><a href="/mypage/attendance">모임참여 목록</a></li>
-      <li><a href="/mypage/creator" class="mypage_active">모임개설 목록</a></li>
+      <li><a href="/mypage/creator">모임개설 목록</a></li>
       <li><a href="/mypage/reply">댓글 목록</a></li>
-      <li><a href="/mypage/follow">팔로우 목록</a></li>
+      <li><a href="/mypage/follow" class="mypage_active">팔로우 목록</a></li>
     </ul>
 
     <div class="common width2">
-      <h2 class="title">개설 목록</h2>
+      <h2 class="title">내가 팔로우한 유저</h2>
       {{#data}}
-      <table class="my_party">
-        <thead>
-          <th>모임이름</th>
-          <th>카테고리</th>
-          <th>모임날짜</th>
-          <th>모임시간</th>
-          <th>참여인원</th>
-        </thead>
-        <tbody>
-        {{#data.creators}}
-          <tr>
-            <td><a href="/moim/view?moimId={{moimId}}">{{title}}</a></td>
-            <td><a>{{cate}}</a></td>
-            <td>{{formatDate}}</td>
-            <td>{{timeStart}} ~ {{timeEnd}}</td>
-            <td>{{currentPerson}}/{{maxPerson}}</td>
-          </tr>
-        {{/data.creators}}
-        </tbody>
-      </table>
+         <div id="tab02">
+           <div class="avatar_wrap">
+             <ul>
+             	
+             	{{#data.follows}}
+                <li id="{{userId}}">
+                  <span><img src="{{#avatarURL}}{{.}}{{/avatarURL}}{{^avatarURL}}https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png{{/avatarURL}}" alt=""></span>
+              	  <h2>{{userNick}}<br/>(@{{userId}})</h2>
+                  <a class="unfollow followed" data-user-id="{{userId}}">팔로우취소</a>
+                </li>
+                {{/data.follows}}
+
+             </ul>
+           </div>
+         </div>
+      {{/data}}
+         
+  	  {{^data}}
+	  <h3>팔로우한 유저가 없습니다.</h3>
 	  {{/data}}
-	  
-	  {{^data}}
-	  <h3>개설한 모임이 없습니다.</h3>
-	  {{/data}}
-	  
-	  
+
 	  {{#data}}
       <div class="page_nav">
        {{#data.prev}}
-        <a href="/mypage/creator?page={{data.prevPage}}"><</a>
+        <a href="/mypage/follow?page={{data.prevPage}}"><</a>
        {{/data.prev}}
        {{^data.prev}}
         <a><</a>
@@ -80,13 +74,13 @@
         <a class="pageActive">{{page}}</a>
         {{/flag}}
         {{^flag}}
-        <a href="/mypage/creator?page={{page}}">{{page}}</a>
+        <a href="/mypage/follow?page={{page}}">{{page}}</a>
         {{/flag}}
       {{/data.pages}}
       
       
 	  {{#data.next}}
-	  <a href="/mypage/creator?page={{data.nextPage}}">></a>
+	  <a href="/mypage/follow?page={{data.nextPage}}">></a>
 	  {{/data.next}}
 	  {{^data.next}}
 	  <a>></a>
@@ -94,6 +88,18 @@
      </div>
      {{/data}}
     </div>
-
+<script type="text/javascript">
+	document.querySelectorAll(".followed").forEach( elm => {
+		elm.onclick = (evt)=> {
+			const xhr = new XMLHttpRequest();
+			xhr.open("delete","/follow?target="+evt.target.dataset.userId, false);
+			xhr.send();
+			const response = JSON.parse(xhr.responseText);
+			if(response.result) {
+				document.querySelector("#"+evt.target.dataset.userId).style.display='none';
+			}
+		};
+	});
+</script>
   </body>
 </html>

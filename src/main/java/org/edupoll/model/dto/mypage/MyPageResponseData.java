@@ -16,6 +16,9 @@ public class MyPageResponseData {
 	// 댓글목록
 	List<MyReplyData> replies = new ArrayList<>();
 	
+	// 팔로우목록
+	List<MyFollowData> follows = new ArrayList<>();
+	
 	List<PageData> pages; // 페이지 몇개까지 보이게 할건지?
 	
 	int viewPage; // 글 토탈 갯수
@@ -32,12 +35,13 @@ public class MyPageResponseData {
 	}
 	
 	public MyPageResponseData(List<MyAttendanceMoimData> attendances, List<MyCreatorMoimData> creators,
-			List<MyReplyData> replies, List<PageData> pages, int viewPage, int nextPage, int prevPage, boolean prev,
+			List<MyReplyData> replies, List<MyFollowData> follows, List<PageData> pages, int viewPage, int nextPage, int prevPage, boolean prev,
 			boolean next) {
 		super();
 		this.attendances = attendances;
 		this.creators = creators;
 		this.replies = replies;
+		this.follows = follows;
 		this.pages = pages;
 		this.viewPage = viewPage;
 		this.nextPage = nextPage;
@@ -46,6 +50,14 @@ public class MyPageResponseData {
 		this.next = next;
 	}
 
+	
+	
+	public List<MyFollowData> getFollows() {
+		return follows;
+	}
+	public void setFollows(List<MyFollowData> follows) {
+		this.follows = follows;
+	}
 	public List<MyAttendanceMoimData> getAttendances() {
 		return attendances;
 	}
