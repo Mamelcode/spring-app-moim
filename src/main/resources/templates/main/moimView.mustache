@@ -108,65 +108,6 @@
       </form>
     </div>
 
-{{#flag}}
-<script type="text/javascript">
-	document.querySelector("#join-bt").onclick = (evt) => {
-		const xhr = new XMLHttpRequest();
-		
-		const status = document.querySelector("#join-bt").dataset.status;
-		if(status === "not-joined") {
-			sendAddAttendanceReq();
-		}else if(status === "joined") {
-			sendDeleteAttendanceReq();
-		}
-		
-		function sendAddAttendanceReq() {
-			xhr.open("post", "/api/attendance/join", false);
-			const data = new FormData();
-			data.append("moimId", "{{moim.Id}}");
-			data.append("userId", "{{logonId}}");		
-			xhr.send(data);
-			
-			const txt = xhr.responseText;
-			console.log(txt);
-			const obj = JSON.parse(txt);
-			if(obj.result) {
-				document.querySelector("#cp").innerHTML = obj.currentPerson; // int
-				let ids = "";
-				for(var i of obj.attendUserIds) {
-					ids += "<span>@"+ i +"<span>";
-				}
-				document.querySelector("#attendance").innerHTML = ids;
-				document.querySelector("#join-bt").innerHTML = "참가취소";
-				document.querySelector("#join-bt").dataset.status = "joined";
-			}else {
-				window.alert(obj.errorMessage);
-			}
-		};
-		
-		function sendDeleteAttendanceReq() {
-			xhr.open("get", "/api/attendance/delete?moimId={{moim.Id}}&userId={{logonId}}", false);	
-			xhr.send();
-			
-			const txt = xhr.responseText;
-			console.log(txt);
-			const obj = JSON.parse(txt);
-			if(obj.result) {
-				document.querySelector("#cp").innerHTML = obj.currentPerson;
-				let ids = "";
-				for(var i of obj.attendUserIds) {
-					ids += "<span>@"+ i +"<span>";
-				}
-				document.querySelector("#attendance").innerHTML = ids;
-				document.querySelector("#join-bt").innerHTML = "참가하기";
-				document.querySelector("#join-bt").dataset.status = "not-joined";
-			}else {
-				window.alert(obj.errorMessage);
-			}
-		};
-	};
-</script>
-{{/flag}}
 <script type="text/javascript">
 	document.querySelectorAll(".replies").forEach( elm => {
 		elm.onclick = (evt)=> {

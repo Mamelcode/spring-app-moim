@@ -12,9 +12,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "follows")
+@Table(
+		name = "follows",
+		uniqueConstraints = {
+				@UniqueConstraint(
+					name="follow_01",
+					columnNames = {
+					"ownerId", "targetId"
+			}
+		)		
+	}
+)
 public class Follow {
 	
 	@Id

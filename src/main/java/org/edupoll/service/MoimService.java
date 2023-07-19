@@ -70,20 +70,21 @@ public class MoimService {
 		List<MoimListResponseData> moims = new ArrayList<>();
 		
 		if(cate == null) {
-			List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 12, sort)).toList();
+//			List<Moim> list = moimRepository.findAll(PageRequest.of(page-1, 12, sort)).toList();
+			List<Moim> list = moimRepository.findByMoims(PageRequest.of(page-1, 12, sort), LocalDateTime.now());
 			moims = list.stream().map(MoimListResponseData::new).toList();
 		}else {
-			List<Moim> list = moimRepository.findByCates(PageRequest.of(page-1, 12, sort), cate);
+			List<Moim> list = moimRepository.findByCates(PageRequest.of(page-1, 12, sort), cate, LocalDateTime.now());
 			moims = list.stream().map(MoimListResponseData::new).toList();
 		}
 		
 		int total = 0;
 		if(cate == null) {
-			total = (int)moimRepository.count();
+			total = (int)moimRepository.countByMoims(LocalDateTime.now());
 		}else {
 			List<String> list = Arrays.asList(cate);
 			for(String s : list) {
-				total += (int)moimRepository.countByCate(s);
+				total += (int)moimRepository.countByCate(s, LocalDateTime.now());
 			}
 		}
 		int totalPage = total/12 + (total % 12 > 0 ? 1: 0);

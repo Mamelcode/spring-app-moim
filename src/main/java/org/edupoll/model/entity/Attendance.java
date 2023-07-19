@@ -8,9 +8,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "ATTENDANCES")
+@Table(
+		name = "ATTENDANCES",
+		uniqueConstraints = {
+				@UniqueConstraint(
+					name="ATTENDANCES_01",
+					columnNames = {
+					"moimId", "userId"
+			}
+		)		
+	}
+)
 public class Attendance {
 	
 	@Id
